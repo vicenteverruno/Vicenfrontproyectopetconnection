@@ -11,7 +11,7 @@ function Login() {
       <AuthSidebar />
 
       <main className="auth-content">
-        <div className="auth-form-box">
+        <div className="auth-form-box"> 
           <h2>¡Bienvenido de nuevo!</h2>
           <p className="auth-subtitle">Nos alegra verte otra vez </p>
 
