@@ -1,0 +1,148 @@
+.auth-page {
+    display: flex;
+    min-height: 100vh;
+    font-family: system-ui, sans-serif;
+  }
+  
+  .auth-sidebar {
+    width: 320px;
+    background: #e8f3ea;
+    padding: 40px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+  
+  .auth-logo-img {
+    width: 180px;
+    margin-bottom: 8px;
+  }
+  
+  .auth-sidebar-title {
+    font-size: 22px;
+    color: #1f3320;
+    line-height: 1.3;
+  }
+  
+  .auth-features {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .auth-features li {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  
+  .auth-features strong {
+    color: #1f3320;
+    font-size: 14px;
+  }
+  
+  .auth-features p {
+    color: #5b6b5c;
+    font-size: 13px;
+    margin: 2px 0 0;
+  }
+  
+  .auth-feature-icon-img {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .auth-sidebar-image {
+    margin-top: auto;
+    width: 100%;
+    max-width: 220px;
+    align-self: center;
+  }
+  
+  .auth-content {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+  }
+  
+  .auth-form-box {
+    width: 100%;
+    max-width: 360px;
+    padding: 20px;
+  }
+  
+  .auth-form-box h2 {
+    text-align: center;
+    color: #1f3320;
+    margin-bottom: 4px;
+  }
+  
+  .auth-subtitle {
+    text-align: center;
+    color: #6b7280;
+    margin-bottom: 28px;
+  }
+  
+  .auth-form-box label {
+    display: block;
+    font-size: 13px;
+    color: #374151;
+    margin-bottom: 6px;
+    margin-top: 16px;
+  }
+  
+  .auth-input {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    padding: 10px 12px;
+  }
+  
+  .auth-input input {
+    border: none;
+    outline: none;
+    flex: 1;
+    font-size: 14px;
+  }
+  
+  .auth-toggle-password {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  
+  .auth-submit {
+    width: 100%;
+    margin-top: 24px;
+    padding: 12px;
+    background: #3f8b4c;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    cursor: pointer;
+  }
+  
+  .auth-submit:hover {
+    background: #34753f;
+  }
+  
+  .auth-switch {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 14px;
+    color: #6b7280;
+  }
+  
+  .auth-switch a {
+    color: #3f8b4c;
+    font-weight: 600;
+    text-decoration: none;
+  }
