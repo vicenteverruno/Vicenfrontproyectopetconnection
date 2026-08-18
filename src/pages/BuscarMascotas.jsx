@@ -3,6 +3,7 @@ import "./BuscarMascotas.css";
 import AppSidebar from "../components/AppSidebar";
 import TopBar from "../components/TopBar";
 import TarjetaMascota from "../components/TarjetaMascota";
+import { mascotasEjemplo } from "../data/mascotas";
 
 const razasPorEspecie = {
   Perro: ["Todas", "Labrador", "Golden", "Pastor alemán", "Border collie", "Bulldog francés", "Caniche", "Beagle", "Husky siberiano", "Otro"],
@@ -12,12 +13,6 @@ const razasPorEspecie = {
 const edades = ["Todas", "0-1", "1-2", "2-4", "4-6", "6-8", "8-10", "10-12", "12-14", "+14"];
 const tamanos = ["Todos", "Pequeño", "Mediano", "Grande"];
 const ubicaciones = ["Todas", "CABA", "Zona sur", "Zona norte", "Zona oeste", "La Plata", "Provincia de Buenos Aires", "Otra"];
-
-const mascotasEjemplo = [
-  { id: 1, nombre: "Roberto", raza: "Bulldog francés", edad: "3 años", sexo: "Macho", ubicacion: "Palermo, BsAs", imagen: "https://placehold.co/300x300/e8f3ea/2f5233?text=Roberto" },
-  { id: 2, nombre: "Carlos", raza: "Golden", edad: "4 años", sexo: "Macho", ubicacion: "Palermo, BsAs", imagen: "https://placehold.co/300x300/e8f3ea/2f5233?text=Carlos" },
-  { id: 3, nombre: "Coco", raza: "Boyero de Berna", edad: "2 años", sexo: "Macho", ubicacion: "Palermo, BsAs", imagen: "https://placehold.co/300x300/e8f3ea/2f5233?text=Coco" },
-];
 
 function BuscarMascotas() {
   const [especie, setEspecie] = useState("Perro");
@@ -92,7 +87,7 @@ function BuscarMascotas() {
 
           <div className="tarjetas-grid">
             {mascotasEjemplo.map((mascota) => (
-              <TarjetaMascota key={mascota.id} {...mascota} />
+              <TarjetaMascota key={mascota.id} {...mascota} imagen={mascota.fotos[0]} />
             ))}
           </div>
         </div>
