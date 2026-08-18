@@ -3,6 +3,7 @@ import Login from "./pages/Login";
 import Registro from "./pages/Registro";
 import BuscarMascotas from "./pages/BuscarMascotas";
 import PerfilMascota from "./pages/PerfilMascota";
+import MiMascota from "./pages/MiMascota";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Route path="/registro" element={<Registro />} />
         <Route path="/buscar" element={<BuscarMascotas />} />
         <Route path="/mascota/:id" element={<PerfilMascota />} />
+        <Route path="/mi-mascota" element={<MiMascota />} />
       </Routes>
     </BrowserRouter>
   );

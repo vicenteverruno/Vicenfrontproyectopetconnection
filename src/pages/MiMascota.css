@@ -1,0 +1,182 @@
+.mimascota-content {
+    padding: 24px 32px;
+  }
+  
+  .mimascota-content h1 {
+    color: #1f3320;
+    margin-bottom: 20px;
+  }
+  
+  .mimascota-subtitle {
+    color: #6b7280;
+    margin-top: -6px;
+    margin-bottom: 20px;
+    font-size: 14px;
+  }
+  
+  .mimascota-section-title {
+    color: #1f3320;
+    font-size: 15px;
+    margin: 20px 0 12px;
+  }
+  
+  /* Modo edición */
+  .mimascota-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px 32px;
+  }
+  
+  .mimascota-field label {
+    display: block;
+    font-size: 12px;
+    color: #6b7280;
+    margin-bottom: 6px;
+  }
+  
+  .mimascota-input-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    padding: 8px 12px;
+  }
+  
+  .mimascota-input-row input {
+    border: none;
+    outline: none;
+    flex: 1;
+    font-size: 14px;
+  }
+  
+  .mimascota-editar {
+    color: #3f8b4c;
+    font-size: 12px;
+    font-weight: 600;
+    margin-left: 8px;
+    white-space: nowrap;
+  }
+  
+  .mimascota-salud-box {
+    background: #e8f3ea;
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 13px;
+    color: #1f3320;
+  }
+  
+  .mimascota-salud-box span {
+    color: #5b6b5c;
+    font-weight: 400;
+  }
+  
+  .mimascota-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 20px;
+    font-size: 14px;
+    color: #374151;
+  }
+  
+  .mimascota-form-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 24px;
+  }
+  
+  .mimascota-subir-btn {
+    background: white;
+    border: 1px dashed #9ca3af;
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-size: 13px;
+    color: #374151;
+    cursor: pointer;
+  }
+  
+  .mimascota-continuar-btn {
+    background: #3f8b4c;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 24px;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  
+  .mimascota-continuar-btn:disabled {
+    background: #a8c9ae;
+    cursor: not-allowed;
+  }
+  
+  /* Modo vista */
+  .mimascota-card {
+    display: flex;
+    gap: 32px;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    padding: 20px;
+    max-width: 760px;
+  }
+  
+  .mimascota-card-foto img {
+    width: 280px;
+    height: 210px;
+    object-fit: cover;
+    border-radius: 10px;
+  }
+  
+  .mimascota-miniaturas {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+  }
+  
+  .mimascota-miniaturas img {
+    width: 50px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 6px;
+    cursor: pointer;
+    opacity: 0.6;
+  }
+  
+  .mimascota-miniaturas img.activa {
+    opacity: 1;
+    outline: 2px solid #3f8b4c;
+  }
+  
+  .mimascota-card-info h2 {
+    color: #1f3320;
+    margin-bottom: 2px;
+  }
+  
+  .mimascota-card-raza {
+    color: #6b7280;
+    margin-bottom: 14px;
+    font-size: 14px;
+  }
+  
+  .mimascota-card-info ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 14px;
+    color: #374151;
+    margin-bottom: 16px;
+  }
+  
+  .mimascota-editar-btn {
+    background: #3f8b4c;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 14px;
+    cursor: pointer;
+  }
