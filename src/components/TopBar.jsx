@@ -9,7 +9,7 @@ function TopBar() {
       </div>
 
       <div className="app-topbar-icons">
-        <span className="app-topbar-bell">🔔</span>
+        <Link to="/notificaciones" className="app-topbar-bell">🔔</Link>
         <Link to="/mi-mascota" className="app-topbar-profile">👤</Link>
       </div>
     </header>

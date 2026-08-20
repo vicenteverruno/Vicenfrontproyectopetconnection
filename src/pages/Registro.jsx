@@ -1,10 +1,15 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./Auth.css";
 import AuthSidebar from "../components/AuthSidebar";
+import IconoOjo from "../components/IconoOjo";
+import iconoMail from "../assets/icono-mail.png";
+import iconoCorazon from "../assets/icono-corazon.png";
+import iconoPata from "../assets/icono-pata.png";
 
 function Registro() {
   const [mostrarPassword, setMostrarPassword] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <div className="auth-page">
@@ -12,18 +17,21 @@ function Registro() {
 
       <main className="auth-content">
         <div className="auth-form-box">
-          <h2>Crea una cuenta 💚</h2>
+          <h2>
+            Crea una cuenta
+            <img src={iconoCorazon} alt="" className="inline-heart" />
+          </h2>
 
-          <form>
+          <form onSubmit={(e) => { e.preventDefault(); navigate("/buscar"); }}>
             <label htmlFor="email">Correo electrónico</label>
             <div className="auth-input">
-              <span>✉️</span>
+              <img src={iconoMail} alt="" className="input-icon" />
               <input id="email" type="email" placeholder="tuemail@gmail.com" />
             </div>
 
             <label htmlFor="password">Contraseña</label>
             <div className="auth-input">
-              <span>🔒</span>
+              <img src={iconoMail} alt="" className="input-icon" />
               <input
                 id="password"
                 type={mostrarPassword ? "text" : "password"}
@@ -34,12 +42,13 @@ function Registro() {
                 className="auth-toggle-password"
                 onClick={() => setMostrarPassword(!mostrarPassword)}
               >
-                {mostrarPassword ? "🙈" : "👁️"}
+                <IconoOjo abierto={mostrarPassword} />
               </button>
             </div>
 
             <button type="submit" className="auth-submit">
-              Continuar 🐾
+              Continuar
+              <img src={iconoPata} alt="" className="btn-paw" />
             </button>
           </form>
 

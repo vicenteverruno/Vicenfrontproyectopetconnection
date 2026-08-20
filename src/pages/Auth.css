@@ -146,4 +146,85 @@
     font-weight: 600;
     text-decoration: none;
   }
+  .auth-logo-box {
+    display: inline-block;
+    background: white;
+    border: 1px solid #cfe3d3;
+    border-radius: 10px;
+    padding: 12px 4px;
+    margin-bottom: 8px;
+  }
   
+  .auth-logo-box .auth-logo-img {
+    width: 130px;
+    margin-bottom: 0;
+  }
+  /* Apaga el ojito nativo de Edge en los campos de contraseña */
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+  display: none;
+}
+
+/* Ajuste de tamaños */
+.auth-logo-box {
+  padding: 8px 5px;
+}
+
+.auth-logo-box .auth-logo-img {
+  width: 120px;
+}
+
+.input-icon {
+  width: 15px;
+  height: 15px;
+}
+
+.inline-heart {
+  width: 14px;
+  height: 14px;
+}
+
+.btn-paw {
+  width: 14px;
+  height: 14px;
+}
+
+.auth-toggle-password svg {
+  width: 17px;
+  height: 17px;
+}
+/* Tamaños ajustados (un poco más grandes que antes) */
+.auth-logo-box .auth-logo-img {
+  width: 160px;
+  height: 80px;
+}
+
+.input-icon {
+  width: 22px;
+  height: 19px;
+}
+
+.inline-heart {
+  width: 22px;
+  height: 18px;
+}
+
+.auth-toggle-password svg {
+  width: 17px;
+  height: 17px;
+}
+
+/* La patita al borde del botón, no pegada al texto */
+.auth-submit {
+  position: relative;
+  justify-content: center;
+}
+
+.btn-paw {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+}

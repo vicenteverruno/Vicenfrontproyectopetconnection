@@ -1,30 +1,38 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./Auth.css";
 import AuthSidebar from "../components/AuthSidebar";
+import IconoOjo from "../components/IconoOjo";
+import iconoMail from "../assets/icono-mail.png";
+import iconoCorazon from "../assets/icono-corazon.png";
+import iconoPata from "../assets/icono-pata.png";
 
 function Login() {
   const [mostrarPassword, setMostrarPassword] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <div className="auth-page">
       <AuthSidebar />
 
       <main className="auth-content">
-        <div className="auth-form-box"> 
+        <div className="auth-form-box">
           <h2>¡Bienvenido de nuevo!</h2>
-          <p className="auth-subtitle">Nos alegra verte otra vez </p>
+          <p className="auth-subtitle">
+            Nos alegra verte otra vez
+            <img src={iconoCorazon} alt="" className="inline-heart" />
+          </p>
 
-          <form>
+          <form onSubmit={(e) => { e.preventDefault(); navigate("/buscar"); }}>
             <label htmlFor="email">Correo electrónico</label>
             <div className="auth-input">
-              <span>✉️</span>
+              <img src={iconoMail} alt="" className="input-icon" />
               <input id="email" type="email" placeholder="tuemail@gmail.com" />
             </div>
 
             <label htmlFor="password">Contraseña</label>
             <div className="auth-input">
-              <span>🔒</span>
+              <img src={iconoMail} alt="" className="input-icon" />
               <input
                 id="password"
                 type={mostrarPassword ? "text" : "password"}
@@ -35,12 +43,13 @@ function Login() {
                 className="auth-toggle-password"
                 onClick={() => setMostrarPassword(!mostrarPassword)}
               >
-                {mostrarPassword ? "🙈" : "👁️"}
+                <IconoOjo abierto={mostrarPassword} />
               </button>
             </div>
 
             <button type="submit" className="auth-submit">
-              Iniciar sesión 🐾
+              Iniciar sesión
+              <img src={iconoPata} alt="" className="btn-paw" />
             </button>
           </form>
 

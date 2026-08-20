@@ -8,15 +8,16 @@
   /* Sidebar */
   .app-sidebar {
     width: 220px;
-    background: #e8f3ea;
-    padding: 24px 16px;
+    background: #dcefe0;
+    padding: 20px 16px;
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: 8px;
   }
   
   .app-sidebar-logo {
-    width: 140px;
+    width: 150px;
+    margin-bottom: 20px;
   }
   
   .app-sidebar-nav {
@@ -26,26 +27,33 @@
   }
   
   .app-sidebar-link {
-    display: block;
+    display: flex;
+    align-items: center;
+    gap: 10px;
     padding: 10px 12px;
     border-radius: 8px;
-    color: #374151;
+    color: #1f2937;
     text-decoration: none;
     font-size: 14px;
   }
   
+  .app-sidebar-icon {
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
+  }
+  
   .app-sidebar-link:hover {
-    background: #d5e8d9;
+    background: #cfe6d5;
   }
   
   .app-sidebar-link.active {
-    background: #3f8b4c;
-    color: white;
+    background: #a9d4b3;
     font-weight: 600;
   }
   
-  .app-sidebar-config {
-    margin-top: auto;
+  .app-sidebar-link.active .app-sidebar-icon {
+    filter: brightness(0) saturate(100%);
   }
   
   /* Main area */
