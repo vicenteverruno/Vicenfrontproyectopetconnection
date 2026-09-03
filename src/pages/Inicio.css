@@ -1,0 +1,129 @@
+.inicio-content {
+    padding: 24px 32px;
+  }
+  
+  .inicio-banner {
+    position: relative;
+    background: #eef6f0;
+    border-radius: 20px;
+    padding: 28px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    overflow: hidden;
+    margin-bottom: 28px;
+  }
+  
+  .inicio-banner h1 {
+    font-size: 22px;
+    color: #1f2937;
+    max-width: 320px;
+    margin: 0;
+  }
+  
+  .inicio-banner-imagen {
+    position: relative;
+  }
+  
+  .inicio-banner-imagen img {
+    width: 160px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 16px;
+  }
+  
+  .inicio-banner-corazon {
+    position: absolute;
+  }
+  
+  .corazon-1 { top: -8px; right: -24px; font-size: 14px; }
+  .corazon-2 { top: 22px; right: -42px; font-size: 22px; }
+  .corazon-3 { top: 54px; right: -18px; font-size: 16px; }
+  
+  .inicio-subtitulo {
+    color: #1f2937;
+    font-size: 16px;
+    margin-bottom: 16px;
+  }
+  
+  /* Tarjetas de mascota (Inicio) */
+  .inicio-tarjeta {
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  
+  .inicio-tarjeta-img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    display: block;
+  }
+  
+  .inicio-tarjeta-info {
+    padding: 12px 14px;
+  }
+  
+  .inicio-tarjeta-info h3 {
+    font-size: 16px;
+    color: #1f2937;
+    margin: 0 0 6px;
+  }
+  
+  .inicio-tarjeta-detalle {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12.5px;
+    color: #4b5563;
+    margin: 3px 0;
+  }
+  
+  .inicio-tarjeta-detalle svg {
+    color: #1f2937;
+    flex-shrink: 0;
+  }
+  
+  .inicio-tarjeta-simbolo {
+    font-weight: 700;
+    color: #1f2937;
+    width: 12px;
+    display: inline-flex;
+    justify-content: center;
+  }
+  
+  .inicio-tarjeta-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10px;
+  }
+  
+  .inicio-tarjeta-btn {
+    background: #1f2937;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 7px 14px;
+    font-size: 12.5px;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  
+  .inicio-tarjeta-acciones {
+    display: flex;
+    gap: 6px;
+  }
+  
+  .inicio-tarjeta-circulo {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 1.5px solid #1f2937;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #1f2937;
+  }

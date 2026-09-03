@@ -1,4 +1,6 @@
 import { Link } from "react-router-dom";
+import iconoNotificaciones from "../assets/icono-notificaciones.png";
+import perfil from "../assets/perfil.png";
 
 function TopBar() {
   return (
@@ -9,8 +11,12 @@ function TopBar() {
       </div>
 
       <div className="app-topbar-icons">
-        <Link to="/notificaciones" className="app-topbar-bell">🔔</Link>
-        <Link to="/mi-mascota" className="app-topbar-profile">👤</Link>
+        <Link to="/notificaciones" className="app-topbar-icon-link">
+          <img src={iconoNotificaciones} alt="Notificaciones" className="app-topbar-icon-img" />
+        </Link>
+        <Link to="/mi-mascota" className="app-topbar-icon-link">
+          <img src={perfil} alt="Perfil" className="app-topbar-icon-img app-topbar-perfil-img" />
+        </Link>
       </div>
     </header>
   );

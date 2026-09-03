@@ -25,7 +25,7 @@ function AppSidebar() {
           Mis favoritos
         </NavLink>
         <NavLink to="/mi-mascota" className="app-sidebar-link">
-          <img src={iconoPata} alt="" className="app-sidebar-icon" />
+          <img src={iconoPata} alt="" className="app-sidebar-icon app-sidebar-icon-pata" />
           Mi mascota
         </NavLink>
         <NavLink to="/notificaciones" className="app-sidebar-link">
@@ -33,6 +33,8 @@ function AppSidebar() {
           Notificaciones
         </NavLink>
       </nav>
+
+      <div className="app-sidebar-divider"></div>
 
       <NavLink to="/configuracion" className="app-sidebar-link app-sidebar-config">
         ⚙️ Configuración
