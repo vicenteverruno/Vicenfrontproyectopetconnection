@@ -241,3 +241,74 @@
   border-radius: 50%;
   object-fit: cover;
 }
+.app-topbar {
+  padding: 18px 32px;
+}
+
+.app-search {
+  border-radius: 999px;
+  border: 1px solid #e5e7eb;
+  padding: 10px 20px;
+  width: 460px;
+  gap: 10px;
+}
+
+.app-search input {
+  font-size: 14px;
+}
+
+.app-topbar-icons {
+  gap: 18px;
+}
+
+.app-topbar-icon-link {
+  position: relative;
+}
+
+.app-topbar-icon-link.tiene-notificacion::after {
+  content: "";
+  position: absolute;
+  top: -1px;
+  right: -1px;
+  width: 8px;
+  height: 8px;
+  background: #22c55e;
+  border-radius: 50%;
+  border: 2px solid white;
+}
+.app-search svg {
+  color: #6b7280;
+  flex-shrink: 0;
+}
+
+.app-search {
+  width: 520px;
+  padding: 12px 22px;
+}
+.app-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.app-search {
+  flex: 1;
+  width: auto;
+  border: 1.5px solid #1f2937;
+}
+
+.app-topbar-icons {
+  gap: 24px;
+  flex-shrink: 0;
+}
+
+.app-topbar-icon-img {
+  width: 28px;
+  height: 28px;
+}
+
+.app-topbar-perfil-img {
+  width: 32px;
+  height: 32px;
+}
