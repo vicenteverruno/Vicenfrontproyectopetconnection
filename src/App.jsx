@@ -6,6 +6,10 @@ import BuscarMascotas from "./pages/BuscarMascotas";
 import PerfilMascota from "./pages/PerfilMascota";
 import MiMascota from "./pages/MiMascota";
 import Notificaciones from "./pages/Notificaciones";
+import Configuracion from "./pages/Configuracion";
+import CambiarPassword from "./pages/CambiarPassword";
+import AyudaSoporte from "./pages/AyudaSoporte";
+import Favoritos from "./pages/Favoritos";
 
 function App() {
   return (
@@ -18,6 +22,10 @@ function App() {
         <Route path="/mascota/:id" element={<PerfilMascota />} />
         <Route path="/mi-mascota" element={<MiMascota />} />
         <Route path="/notificaciones" element={<Notificaciones />} />
+        <Route path="/configuracion" element={<Configuracion />} />
+        <Route path="/cambiar-contrasena" element={<CambiarPassword />} />
+        <Route path="/ayuda-soporte" element={<AyudaSoporte />} />
+        <Route path="/favoritos" element={<Favoritos />} />
       </Routes>
     </BrowserRouter>
   );

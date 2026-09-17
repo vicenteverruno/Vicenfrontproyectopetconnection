@@ -2,7 +2,7 @@ import { useState } from "react";
 import "./BuscarMascotas.css";
 import AppSidebar from "../components/AppSidebar";
 import TopBar from "../components/TopBar";
-import TarjetaMascota from "../components/TarjetaMascota";
+import TarjetaMascotaInicio from "../components/TarjetaMascotaInicio";
 import { mascotasEjemplo } from "../data/mascotas";
 
 const razasPorEspecie = {
@@ -87,7 +87,7 @@ function BuscarMascotas() {
 
           <div className="tarjetas-grid">
             {mascotasEjemplo.map((mascota) => (
-              <TarjetaMascota key={mascota.id} {...mascota} imagen={mascota.fotos[0]} />
+              <TarjetaMascotaInicio key={mascota.id} {...mascota} imagen={mascota.fotos[0]} />
             ))}
           </div>
         </div>

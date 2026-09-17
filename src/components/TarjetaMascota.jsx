@@ -1,6 +1,11 @@
 import { Link } from "react-router-dom";
+import { IconoCorazon } from "./Iconos";
+import { useFavoritos } from "../hooks/useFavoritos";
 
 function TarjetaMascota({ id, imagen, nombre, raza, edad, sexo, ubicacion }) {
+  const { esFavorito, toggleFavorito } = useFavoritos();
+  const favorito = esFavorito(id);
+
   return (
     <div className="tarjeta-mascota">
       <img src={imagen} alt={nombre} className="tarjeta-mascota-img" />
@@ -16,7 +21,9 @@ function TarjetaMascota({ id, imagen, nombre, raza, edad, sexo, ubicacion }) {
           <Link to={`/mascota/${id}`} className="tarjeta-mascota-btn">
             Ver perfil
           </Link>
-          <span className="tarjeta-mascota-fav">🤍</span>
+          <button type="button" className="tarjeta-mascota-fav-btn" onClick={() => toggleFavorito(id)}>
+            <IconoCorazon activo={favorito} />
+          </button>
         </div>
       </div>
     </div>

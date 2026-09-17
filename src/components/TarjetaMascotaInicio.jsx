@@ -1,13 +1,16 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import { IconoPata, IconoCalendario, IconoUbicacion, IconoMensaje, IconoCorazon } from "./Iconos";
+import { useFavoritos } from "../hooks/useFavoritos";
 
 function TarjetaMascotaInicio({ id, imagen, nombre, raza, edad, sexo, ubicacion }) {
-  const [favorito, setFavorito] = useState(false);
+  const { esFavorito, toggleFavorito } = useFavoritos();
+  const favorito = esFavorito(id);
 
   return (
     <div className="inicio-tarjeta">
-      <img src={imagen} alt={nombre} className="inicio-tarjeta-img" />
+      <div className="inicio-tarjeta-img-wrap">
+        <img src={imagen} alt={nombre} className="inicio-tarjeta-img" />
+      </div>
 
       <div className="inicio-tarjeta-info">
         <h3>{nombre}</h3>
@@ -31,7 +34,7 @@ function TarjetaMascotaInicio({ id, imagen, nombre, raza, edad, sexo, ubicacion 
             <button
               type="button"
               className="inicio-tarjeta-circulo"
-              onClick={() => setFavorito(!favorito)}
+              onClick={() => toggleFavorito(id)}
             >
               <IconoCorazon activo={favorito} />
             </button>
