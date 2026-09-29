@@ -78,3 +78,20 @@ export function IconoPata() {
       </svg>
     );
   }
+  export function IconoPeso() {
+    return (
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="5" r="3" />
+        <path d="M6 21l2.2-11h7.6L18 21z" />
+      </svg>
+    );
+  }
+  
+  export function IconoTamano() {
+    return (
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="3" y="3" width="18" height="18" rx="2" />
+        <path d="M9 3v18M15 3v6M3 9h6M15 15h6" />
+      </svg>
+    );
+  }

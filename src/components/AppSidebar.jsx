@@ -9,7 +9,9 @@ import iconoNotificaciones from "../assets/icono-notificaciones.png";
 function AppSidebar() {
   return (
     <aside className="app-sidebar">
-      <img src={logo} alt="Pet Connection" className="app-sidebar-logo" />
+      <NavLink to="/inicio" className="app-sidebar-logo-link">
+        <img src={logo} alt="Pet Connection" className="app-sidebar-logo" />
+      </NavLink>
 
       <nav className="app-sidebar-nav">
         <NavLink to="/inicio" className="app-sidebar-link">

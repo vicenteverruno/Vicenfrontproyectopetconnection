@@ -3,10 +3,11 @@ import "./MiMascota.css";
 import AppSidebar from "../components/AppSidebar";
 import TopBar from "../components/TopBar";
 import { miMascotaInicial } from "../data/miMascota";
+import { IconoPata, IconoCalendario, IconoUbicacion, IconoCorazon, IconoPeso, IconoTamano } from "../components/Iconos";
 
 function MiMascota() {
   const [mascota, setMascota] = useState(miMascotaInicial);
-  const [modo, setModo] = useState("vista"); // "vista" o "edicion"
+  const [modo, setModo] = useState(miMascotaInicial.fotos.length > 0 ? "vista" : "edicion");
   const [fotoActual, setFotoActual] = useState(0);
   const [confirmado, setConfirmado] = useState(false);
   const inputFotoRef = useRef(null);
@@ -21,8 +22,16 @@ function MiMascota() {
     setMascota((prev) => ({ ...prev, fotos: [...prev.fotos, ...nuevasFotos] }));
   };
 
+  const handleEliminarFoto = (index) => {
+    setMascota((prev) => ({
+      ...prev,
+      fotos: prev.fotos.filter((_, i) => i !== index),
+    }));
+    setFotoActual(0);
+  };
+
   const handleContinuar = () => {
-    if (!confirmado) return;
+    if (!confirmado || mascota.fotos.length === 0) return;
     setModo("vista");
   };
 
@@ -37,6 +46,39 @@ function MiMascota() {
             <p className="mimascota-subtitle">
               Revisá que la información de {mascota.nombre} sea correcta antes de continuar.
             </p>
+
+            <h3 className="mimascota-section-title">Fotos de tu mascota</h3>
+
+            <div className="mimascota-fotos-grid">
+              {mascota.fotos.map((foto, index) => (
+                <div key={index} className="mimascota-foto-miniatura">
+                  <img src={foto} alt="" />
+                  <button
+                    type="button"
+                    className="mimascota-foto-eliminar"
+                    onClick={() => handleEliminarFoto(index)}
+                  >
+                    ×
+                  </button>
+                </div>
+              ))}
+
+              <button
+                type="button"
+                className="mimascota-foto-agregar"
+                onClick={() => inputFotoRef.current.click()}
+              >
+                + Agregar
+              </button>
+              <input
+                type="file"
+                accept="image/*"
+                multiple
+                ref={inputFotoRef}
+                onChange={handleFotosSeleccionadas}
+                style={{ display: "none" }}
+              />
+            </div>
 
             <h3 className="mimascota-section-title">Datos de la mascota</h3>
 
@@ -106,27 +148,15 @@ function MiMascota() {
               Confirmo que los datos de mi mascota son correctos
             </label>
 
+            {mascota.fotos.length === 0 && (
+              <p className="mimascota-aviso">Subí al menos una foto para continuar.</p>
+            )}
+
             <div className="mimascota-form-buttons">
               <button
                 type="button"
-                className="mimascota-subir-btn"
-                onClick={() => inputFotoRef.current.click()}
-              >
-                + Subir fotos de tu mascota
-              </button>
-              <input
-                type="file"
-                accept="image/*"
-                multiple
-                ref={inputFotoRef}
-                onChange={handleFotosSeleccionadas}
-                style={{ display: "none" }}
-              />
-
-              <button
-                type="button"
                 className="mimascota-continuar-btn"
-                disabled={!confirmado}
+                disabled={!confirmado || mascota.fotos.length === 0}
                 onClick={handleContinuar}
               >
                 Continuar
@@ -148,18 +178,24 @@ function MiMascota() {
 
           <div className="mimascota-card">
             <div className="mimascota-card-foto">
-              <img src={mascota.fotos[fotoActual]} alt={mascota.nombre} />
-              <div className="mimascota-miniaturas">
-                {mascota.fotos.map((foto, index) => (
-                  <img
-                    key={index}
-                    src={foto}
-                    alt=""
-                    className={index === fotoActual ? "activa" : ""}
-                    onClick={() => setFotoActual(index)}
-                  />
-                ))}
-              </div>
+              {mascota.fotos.length > 0 ? (
+                <>
+                  <img src={mascota.fotos[fotoActual]} alt={mascota.nombre} />
+                  <div className="mimascota-miniaturas">
+                    {mascota.fotos.map((foto, index) => (
+                      <img
+                        key={index}
+                        src={foto}
+                        alt=""
+                        className={index === fotoActual ? "activa" : ""}
+                        onClick={() => setFotoActual(index)}
+                      />
+                    ))}
+                  </div>
+                </>
+              ) : (
+                <div className="mimascota-sin-foto">Sin fotos todavía</div>
+              )}
             </div>
 
             <div className="mimascota-card-info">
@@ -167,13 +203,13 @@ function MiMascota() {
               <p className="mimascota-card-raza">{mascota.raza}</p>
 
               <ul>
-                <li>🐾 <strong>Raza:</strong> {mascota.raza}</li>
-                <li>📅 <strong>Edad:</strong> {mascota.fechaNacimiento}</li>
-                <li>♂ <strong>Sexo:</strong> {mascota.sexo}</li>
-                <li>⚖️ <strong>Peso:</strong> {mascota.peso}</li>
-                <li>📏 <strong>Tamaño:</strong> {mascota.tamano}</li>
-                <li>📍 <strong>Ubicación:</strong> {mascota.ubicacion}</li>
-                <li>💚 <strong>Salud:</strong> {mascota.salud}</li>
+                <li><IconoPata /> <strong>Raza:</strong> {mascota.raza}</li>
+                <li><IconoCalendario /> <strong>Edad:</strong> {mascota.fechaNacimiento}</li>
+                <li><span className="mimascota-simbolo">{mascota.sexo === "Macho" ? "♂" : "♀"}</span> <strong>Sexo:</strong> {mascota.sexo}</li>
+                <li><IconoPeso /> <strong>Peso:</strong> {mascota.peso}</li>
+                <li><IconoTamano /> <strong>Tamaño:</strong> {mascota.tamano}</li>
+                <li><IconoUbicacion /> <strong>Ubicación:</strong> {mascota.ubicacion}</li>
+                <li><IconoCorazon activo={true} /> <strong>Salud:</strong> {mascota.salud}</li>
               </ul>
 
               <button type="button" className="mimascota-editar-btn" onClick={() => setModo("edicion")}>

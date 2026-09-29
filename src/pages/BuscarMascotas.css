@@ -17,8 +17,8 @@
 }
 
 .app-sidebar-logo {
-  width: 150px;
-  margin-bottom: 28px;
+  width: 175px;
+  margin-bottom: 21px;
 }
 
 .app-sidebar-nav {
@@ -259,4 +259,33 @@
   justify-content: center;
   cursor: pointer;
   color: #1f2937;
+}
+
+.app-topbar {
+  gap: 24px;
+}
+
+.app-search {
+  flex: 1;
+  width: auto;
+  padding: 14px 24px;
+}
+
+.app-search input {
+  font-size: 15px;
+}
+
+.app-topbar-icon-img {
+  width: 24px;
+  height: 24px;
+}
+
+.app-topbar-perfil-img {
+  width: 28px;
+  height: 28px;
+}
+
+.app-topbar-icons {
+  gap: 18px;
+  flex-shrink: 0;
 }
