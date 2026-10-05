@@ -2,12 +2,12 @@ import { useState, useRef } from "react";
 import "./MiMascota.css";
 import AppSidebar from "../components/AppSidebar";
 import TopBar from "../components/TopBar";
-import { miMascotaInicial } from "../data/miMascota";
+import { useMiMascota } from "../hooks/useMiMascota";
 import { IconoPata, IconoCalendario, IconoUbicacion, IconoCorazon, IconoPeso, IconoTamano } from "../components/Iconos";
 
 function MiMascota() {
-  const [mascota, setMascota] = useState(miMascotaInicial);
-  const [modo, setModo] = useState(miMascotaInicial.fotos.length > 0 ? "vista" : "edicion");
+  const [mascota, setMascota] = useMiMascota();
+  const [modo, setModo] = useState(mascota.fotos.length > 0 ? "vista" : "edicion");
   const [fotoActual, setFotoActual] = useState(0);
   const [confirmado, setConfirmado] = useState(false);
   const inputFotoRef = useRef(null);
