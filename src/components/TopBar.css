@@ -1,0 +1,13 @@
+.app-topbar.app-topbar-sin-linea {
+    border-bottom: none;
+  }
+  
+  .app-topbar-volver {
+    color: #111827;
+    text-decoration: none;
+    font-size: 15px;
+  }
+  
+  .app-topbar-icons {
+    margin-left: auto;
+  }

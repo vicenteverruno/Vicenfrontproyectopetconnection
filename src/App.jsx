@@ -4,6 +4,7 @@ import Registro from "./pages/Registro";
 import Inicio from "./pages/Inicio";
 import BuscarMascotas from "./pages/BuscarMascotas";
 import PerfilMascota from "./pages/PerfilMascota";
+import Comentarios from "./pages/Comentarios";
 import MiMascota from "./pages/MiMascota";
 import Notificaciones from "./pages/Notificaciones";
 import Configuracion from "./pages/Configuracion";
@@ -20,6 +21,7 @@ function App() {
         <Route path="/inicio" element={<Inicio />} />
         <Route path="/buscar" element={<BuscarMascotas />} />
         <Route path="/mascota/:id" element={<PerfilMascota />} />
+        <Route path="/mascota/:id/comentarios" element={<Comentarios />} />
         <Route path="/mi-mascota" element={<MiMascota />} />
         <Route path="/notificaciones" element={<Notificaciones />} />
         <Route path="/configuracion" element={<Configuracion />} />

@@ -1,0 +1,88 @@
+.filtro-desplegable {
+    position: relative;
+    flex: 1;
+    min-width: 120px;
+  }
+  
+  .filtro-desplegable-label {
+    display: block;
+    font-size: 14px;
+    color: #111827;
+    margin-bottom: 6px;
+    padding-left: 4px;
+  }
+  
+  .filtro-desplegable-boton {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: white;
+    border: 1.5px solid #374151;
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-size: 14px;
+    color: #111827;
+    cursor: pointer;
+    text-align: left;
+  }
+  
+  .filtro-desplegable-icono {
+    display: flex;
+    align-items: center;
+    color: #111827;
+  }
+  
+  .filtro-desplegable-valor {
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .filtro-simbolo {
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1;
+  }
+  
+  .filtro-desplegable-lista {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    margin: 4px 0 0;
+    padding: 0;
+    list-style: none;
+    background: white;
+    border: 1.5px solid #374151;
+    border-radius: 8px;
+    z-index: 20;
+    max-height: 280px;
+    overflow-y: auto;
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+  }
+  
+  .filtro-desplegable-lista li + li {
+    border-top: 1px solid #9ca3af;
+  }
+  
+  .filtro-desplegable-lista button {
+    width: 100%;
+    background: none;
+    border: none;
+    text-align: left;
+    padding: 9px 12px;
+    font-size: 14px;
+    color: #111827;
+    cursor: pointer;
+  }
+  
+  .filtro-desplegable-lista button:hover {
+    background: #f3f4f6;
+  }
+  
+  .filtro-desplegable-lista button.activa {
+    background: #e8f3ea;
+    font-weight: 600;
+  }

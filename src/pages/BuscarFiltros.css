@@ -1,0 +1,40 @@
+.buscar-pagina {
+    padding: 24px 32px;
+  }
+  
+  .buscar-titulo {
+    font-size: 30px;
+    font-weight: 700;
+    color: #111827;
+    margin: 0;
+  }
+  
+  .buscar-subtitulo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 15px;
+    color: #374151;
+    margin: 2px 0 22px;
+  }
+  
+  .buscar-subtitulo img {
+    width: 16px;
+    height: 16px;
+  }
+  
+  .buscar-filtros {
+    display: flex;
+    gap: 14px;
+    background: #ececec;
+    border: 1.5px solid #9ca3af;
+    border-radius: 26px;
+    padding: 14px 20px 24px;
+    margin-bottom: 26px;
+  }
+  
+  .buscar-resultados {
+    font-size: 16px;
+    color: #111827;
+    margin: 0 0 18px;
+  }

@@ -1,3 +1,4 @@
+import "./TarjetaMascota.css";
 import { Link } from "react-router-dom";
 import { IconoPata, IconoCalendario, IconoUbicacion, IconoMensaje, IconoCorazon } from "./Iconos";
 import { useFavoritos } from "../hooks/useFavoritos";
@@ -7,35 +8,29 @@ function TarjetaMascotaInicio({ id, imagen, nombre, raza, edad, sexo, ubicacion 
   const favorito = esFavorito(id);
 
   return (
-    <div className="inicio-tarjeta">
-      <div className="inicio-tarjeta-img-wrap">
-        <img src={imagen} alt={nombre} className="inicio-tarjeta-img" />
-      </div>
+    <div className="tm-card">
+      <img src={imagen} alt={nombre} className="tm-img" />
 
-      <div className="inicio-tarjeta-info">
-        <h3>{nombre}</h3>
+      <div className="tm-info">
+        <h3 className="tm-nombre">{nombre}</h3>
 
-        <p className="inicio-tarjeta-detalle"><IconoPata /> {raza}</p>
-        <p className="inicio-tarjeta-detalle"><IconoCalendario /> {edad}</p>
-        <p className="inicio-tarjeta-detalle">
-          <span className="inicio-tarjeta-simbolo">{sexo === "Macho" ? "♂" : "♀"}</span> {sexo}
+        <p className="tm-detalle"><IconoPata /> {raza}</p>
+        <p className="tm-detalle"><IconoCalendario /> {edad}</p>
+        <p className="tm-detalle">
+          <span className="tm-simbolo">{sexo === "Macho" ? "♂" : "♀"}</span> {sexo}
         </p>
-        <p className="inicio-tarjeta-detalle"><IconoUbicacion /> {ubicacion}</p>
+        <p className="tm-detalle"><IconoUbicacion /> {ubicacion}</p>
 
-        <div className="inicio-tarjeta-footer">
-          <Link to={`/mascota/${id}`} className="inicio-tarjeta-btn">
+        <div className="tm-footer">
+          <Link to={`/mascota/${id}`} className="tm-btn">
             Ver perfil
           </Link>
 
-          <div className="inicio-tarjeta-acciones">
-            <button type="button" className="inicio-tarjeta-circulo">
+          <div className="tm-acciones">
+            <button type="button" className="tm-circulo">
               <IconoMensaje />
             </button>
-            <button
-              type="button"
-              className="inicio-tarjeta-circulo"
-              onClick={() => toggleFavorito(id)}
-            >
+            <button type="button" className="tm-circulo" onClick={() => toggleFavorito(id)}>
               <IconoCorazon activo={favorito} />
             </button>
           </div>

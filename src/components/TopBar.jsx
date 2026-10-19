@@ -1,15 +1,22 @@
+import "./TopBar.css";
 import { Link } from "react-router-dom";
 import { IconoLupa } from "./Iconos";
 import iconoNotificaciones from "../assets/icono-notificaciones.png";
 import perfil from "../assets/perfil.png";
 
-function TopBar() {
+function TopBar({ volverA }) {
   return (
-    <header className="app-topbar">
-      <div className="app-search">
-        <IconoLupa />
-        <input type="text" placeholder="Buscar mascotas por raza, ubicación, etc..." />
-      </div>
+    <header className={`app-topbar ${volverA ? "app-topbar-sin-linea" : ""}`}>
+      {volverA ? (
+        <Link to={volverA} className="app-topbar-volver">
+          ‹ Volver
+        </Link>
+      ) : (
+        <div className="app-search">
+          <IconoLupa />
+          <input type="text" placeholder="Buscar mascotas por raza, ubicación, etc..." />
+        </div>
+      )}
 
       <div className="app-topbar-icons">
         <Link to="/notificaciones" className="app-topbar-icon-link tiene-notificacion">

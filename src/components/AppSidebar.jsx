@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import logo from "../assets/logo.png";
 import iconoInicio from "../assets/icono-inicio.png";
 import iconoBuscar from "../assets/icono-buscar.png";
@@ -7,6 +7,9 @@ import iconoPata from "../assets/icono-pata.png";
 import iconoNotificaciones from "../assets/icono-notificaciones.png";
 
 function AppSidebar() {
+  const { pathname } = useLocation();
+  const enPerfilDeMascota = pathname.startsWith("/mascota/");
+
   return (
     <aside className="app-sidebar">
       <NavLink to="/inicio" className="app-sidebar-logo-link">
@@ -18,7 +21,12 @@ function AppSidebar() {
           <img src={iconoInicio} alt="" className="app-sidebar-icon" />
           Inicio
         </NavLink>
-        <NavLink to="/buscar" className="app-sidebar-link">
+        <NavLink
+          to="/buscar"
+          className={({ isActive }) =>
+            `app-sidebar-link ${isActive || enPerfilDeMascota ? "active" : ""}`
+          }
+        >
           <img src={iconoBuscar} alt="" className="app-sidebar-icon" />
           Buscar
         </NavLink>

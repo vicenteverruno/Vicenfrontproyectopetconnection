@@ -2,10 +2,13 @@ import robertoImg from "../assets/roberto.png";
 import carlosImg from "../assets/carlos.png";
 import cocoImg from "../assets/coco.png";
 
+const repetir = (img, cantidad) => Array(cantidad).fill(img);
+
 export const mascotasEjemplo = [
   {
     id: 1,
     nombre: "Roberto",
+    dueno: "Martina",
     raza: "Bulldog francés",
     edad: "3 años",
     sexo: "Macho",
@@ -13,16 +16,13 @@ export const mascotasEjemplo = [
     tamano: "Mediano",
     ubicacion: "Palermo, BsAs",
     telefono: "+54 11 5555-1234",
-    fotos: [
-      robertoImg,
-      "https://placehold.co/500x400/e8f3ea/2f5233?text=Roberto+2",
-      "https://placehold.co/500x400/e8f3ea/2f5233?text=Roberto+3",
-    ],
+    fotos: repetir(robertoImg, 4),
     salud: { vacunas: true, desparasitacion: true, enfermedadesGeneticas: true, certificadoSalud: true },
   },
   {
     id: 2,
     nombre: "Carlos",
+    dueno: "Julián",
     raza: "Golden Retriever",
     edad: "4 años",
     sexo: "Macho",
@@ -30,16 +30,13 @@ export const mascotasEjemplo = [
     tamano: "Grande",
     ubicacion: "Palermo, BsAs",
     telefono: "+54 11 5555-5678",
-    fotos: [
-      carlosImg,
-      "https://placehold.co/500x400/e8f3ea/2f5233?text=Carlos+2",
-      "https://placehold.co/500x400/e8f3ea/2f5233?text=Carlos+3",
-    ],
+    fotos: repetir(carlosImg, 8),
     salud: { vacunas: true, desparasitacion: true, enfermedadesGeneticas: true, certificadoSalud: true },
   },
   {
     id: 3,
     nombre: "Coco",
+    dueno: "Sofía",
     raza: "Boyero de Berna",
     edad: "2 años",
     sexo: "Macho",
@@ -47,10 +44,7 @@ export const mascotasEjemplo = [
     tamano: "Mediano",
     ubicacion: "Palermo, BsAs",
     telefono: "+54 11 5555-9012",
-    fotos: [
-      cocoImg,
-      "https://placehold.co/500x400/e8f3ea/2f5233?text=Coco+2",
-    ],
+    fotos: repetir(cocoImg, 3),
     salud: { vacunas: true, desparasitacion: false, enfermedadesGeneticas: true, certificadoSalud: true },
   },
 ];

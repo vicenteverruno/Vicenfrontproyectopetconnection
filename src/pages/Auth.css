@@ -4,28 +4,31 @@
   font-family: system-ui, sans-serif;
 }
 
+/* Barra lateral */
 .auth-sidebar {
   width: 260px;
   height: 100vh;
-  background: #e8f3ea;
-  padding: 24px 20px;
+  background: #bfdfc8;
+  padding: 22px 16px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 16px;
   overflow: hidden;
   box-sizing: border-box;
 }
 
 .auth-logo-img {
   width: 100%;
-  max-width: 190px;
-  align-self: center;
+  height: 84px;
+  object-fit: cover;
+  border-radius: 10px;
 }
 
 .auth-sidebar-title {
   font-size: 22px;
-  color: #1f3320;
+  color: #111827;
   line-height: 1.3;
+  margin: 6px 0 0;
 }
 
 .auth-features {
@@ -42,32 +45,33 @@
   align-items: flex-start;
 }
 
+.auth-feature-icon-img {
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+}
+
 .auth-features strong {
-  color: #1f3320;
-  font-size: 15px;
+  color: #111827;
+  font-size: 17px;
 }
 
 .auth-features p {
-  color: #5b6b5c;
-  font-size: 14px;
-  margin: 2px 0 0;
-}
-
-.auth-feature-icon-img {
-  width: 30px;
-  height: 30px;
-  flex-shrink: 0;
+  color: #374151;
+  font-size: 15px;
+  margin: 3px 0 0;
 }
 
 .auth-sidebar-image {
   margin-top: auto;
   width: 100%;
-  max-width: 220px;
-  max-height: 24vh;
+  max-width: 230px;
+  max-height: 26vh;
   object-fit: contain;
   align-self: center;
 }
 
+/* Columna del formulario */
 .auth-content {
   flex: 1;
   display: flex;
@@ -84,41 +88,47 @@
 
 .auth-form-box h2 {
   text-align: center;
-  color: #1f3320;
+  color: #111827;
   font-size: 32px;
-  margin-bottom: 8px;
+  font-weight: 500;
+  margin-bottom: 10px;
 }
 
 .auth-subtitle {
   text-align: center;
-  color: #1f2937;
-  font-size: 27px;
-  margin-bottom: 32px;
+  color: #111827;
+  font-size: 26px;
+  font-weight: 400;
+  margin-bottom: 34px;
 }
 
 .auth-form-box label {
   display: block;
   font-size: 16px;
-  color: #374151;
-  margin-bottom: 8px;
-  margin-top: 20px;
+  color: #111827;
+  margin: 22px 0 8px;
 }
 
 .auth-input {
   display: flex;
   align-items: center;
-  gap: 10px;
-  border: 2px solid #d1d5db;
-  border-radius: 6px;
-  padding: 16px 18px;
+  gap: 12px;
+  border: 1.5px solid #374151;
+  border-radius: 999px;
+  padding: 11px 20px;
 }
 
 .auth-input input {
   border: none;
   outline: none;
   flex: 1;
-  font-size: 17px;
+  font-size: 15px;
   padding: 4px 0;
+  background: transparent;
+}
+
+.auth-input input::placeholder {
+  color: #6b7280;
 }
 
 .input-icon {
@@ -128,8 +138,8 @@
 }
 
 .inline-heart {
-  width: 19px;
-  height: 19px;
+  width: 18px;
+  height: 18px;
   vertical-align: middle;
   margin-left: 6px;
 }
@@ -137,27 +147,28 @@
 .auth-toggle-password {
   display: flex;
   align-items: center;
-  color: #6b7280;
+  color: #111827;
   background: none;
   border: none;
   cursor: pointer;
 }
 
 .auth-toggle-password svg {
-  width: 20px;
-  height: 20px;
+  width: 19px;
+  height: 19px;
 }
 
+/* Botón verde */
 .auth-submit {
   position: relative;
   width: 100%;
-  margin-top: 28px;
-  padding: 16px;
-  background: #3f8b4c;
+  margin-top: 26px;
+  padding: 13px;
+  background: #2e7d32;
   color: white;
   border: none;
   border-radius: 8px;
-  font-size: 18px;
+  font-size: 17px;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -165,7 +176,7 @@
 }
 
 .auth-submit:hover {
-  background: #34753f;
+  background: #276b2b;
 }
 
 .btn-paw {
@@ -173,20 +184,29 @@
   right: 20px;
   top: 50%;
   transform: translateY(-50%);
-  width: 21px;
-  height: 21px;
+  width: 20px;
+  height: 20px;
+}
+
+/* Línea de arriba y de abajo del "¿No tenés cuenta?" */
+.auth-form-box hr {
+  border: none;
+  border-top: 1px solid #d1d5db;
+  margin: 28px 0 0;
 }
 
 .auth-switch {
   text-align: center;
-  margin-top: 24px;
+  margin: 0;
+  padding: 16px 0;
   font-size: 16px;
-  color: #6b7280;
+  color: #111827;
+  border-bottom: 1px solid #d1d5db;
 }
 
 .auth-switch a {
-  color: #3f8b4c;
-  font-weight: 600;
+  color: #2e7d32;
+  font-weight: 500;
   text-decoration: none;
 }
 
