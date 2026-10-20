@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import "./Comentarios.css";
 import AppSidebar from "../components/AppSidebar";
 import TopBar from "../components/TopBar";
-import { mascotasEjemplo } from "../data/mascotas";
+import { useMascotas } from "../hooks/useMascotas";
 import { useComentarios } from "../hooks/useComentarios";
 
 function IconoVerificado() {
@@ -26,7 +26,8 @@ function IconoEnviar() {
 
 function Comentarios() {
   const { id } = useParams();
-  const mascota = mascotasEjemplo.find((m) => m.id === Number(id));
+  const mascotas = useMascotas();
+  const mascota = mascotas.find((m) => m.id === Number(id));
   const { comentarios, agregarComentario } = useComentarios(id);
   const [fotoActual, setFotoActual] = useState(0);
   const [texto, setTexto] = useState("");

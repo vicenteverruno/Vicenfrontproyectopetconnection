@@ -2,12 +2,13 @@ import "./Favoritos.css";
 import AppSidebar from "../components/AppSidebar";
 import TopBar from "../components/TopBar";
 import TarjetaMascotaInicio from "../components/TarjetaMascotaInicio";
-import { mascotasEjemplo } from "../data/mascotas";
+import { useMascotas } from "../hooks/useMascotas";
 import { useFavoritos } from "../hooks/useFavoritos";
 
 function Favoritos() {
+  const mascotas = useMascotas();
   const { favoritos } = useFavoritos();
-  const mascotasFavoritas = mascotasEjemplo.filter((m) => favoritos.includes(m.id));
+  const mascotasFavoritas = mascotas.filter((m) => favoritos.includes(m.id));
 
   return (
     <div className="app-layout">

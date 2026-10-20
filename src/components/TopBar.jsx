@@ -4,13 +4,15 @@ import { IconoLupa } from "./Iconos";
 import iconoNotificaciones from "../assets/icono-notificaciones.png";
 import perfil from "../assets/perfil.png";
 
-function TopBar({ volverA }) {
+function TopBar({ volverA, sinBuscador }) {
   return (
-    <header className={`app-topbar ${volverA ? "app-topbar-sin-linea" : ""}`}>
+    <header className={`app-topbar ${volverA || sinBuscador ? "app-topbar-sin-linea" : ""}`}>
       {volverA ? (
         <Link to={volverA} className="app-topbar-volver">
           ‹ Volver
         </Link>
+      ) : sinBuscador ? (
+        <span />
       ) : (
         <div className="app-search">
           <IconoLupa />

@@ -6,7 +6,7 @@ const CLAVE = "petconnection_mi_mascota";
 function leerMascota() {
   try {
     const guardado = localStorage.getItem(CLAVE);
-    return guardado ? JSON.parse(guardado) : miMascotaInicial;
+    return guardado ? { ...miMascotaInicial, ...JSON.parse(guardado) } : miMascotaInicial;
   } catch {
     return miMascotaInicial;
   }
@@ -16,7 +16,11 @@ export function useMiMascota() {
   const [mascota, setMascota] = useState(leerMascota);
 
   useEffect(() => {
-    localStorage.setItem(CLAVE, JSON.stringify(mascota));
+    try {
+      localStorage.setItem(CLAVE, JSON.stringify(mascota));
+    } catch {
+      // Si el navegador se queda sin espacio, no rompemos la página
+    }
   }, [mascota]);
 
   return [mascota, setMascota];

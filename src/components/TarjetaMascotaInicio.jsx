@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { IconoPata, IconoCalendario, IconoUbicacion, IconoMensaje, IconoCorazon } from "./Iconos";
 import { useFavoritos } from "../hooks/useFavoritos";
 
-function TarjetaMascotaInicio({ id, imagen, nombre, raza, edad, sexo, ubicacion }) {
+function TarjetaMascotaInicio({ id, imagen, nombre, raza, edad, sexo, ubicacion, esMia }) {
   const { esFavorito, toggleFavorito } = useFavoritos();
   const favorito = esFavorito(id);
 
@@ -12,7 +12,10 @@ function TarjetaMascotaInicio({ id, imagen, nombre, raza, edad, sexo, ubicacion 
       <img src={imagen} alt={nombre} className="tm-img" />
 
       <div className="tm-info">
-        <h3 className="tm-nombre">{nombre}</h3>
+        <h3 className="tm-nombre">
+          {nombre}
+          {esMia && <span className="tm-badge">Tu mascota</span>}
+        </h3>
 
         <p className="tm-detalle"><IconoPata /> {raza}</p>
         <p className="tm-detalle"><IconoCalendario /> {edad}</p>

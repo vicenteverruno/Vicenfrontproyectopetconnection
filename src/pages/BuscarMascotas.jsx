@@ -6,7 +6,7 @@ import TopBar from "../components/TopBar";
 import TarjetaMascotaInicio from "../components/TarjetaMascotaInicio";
 import FiltroDesplegable from "../components/FiltroDesplegable";
 import { IconoPata, IconoRaza, IconoCalendario, IconoUbicacion } from "../components/Iconos";
-import { mascotasEjemplo } from "../data/mascotas";
+import { useMascotas } from "../hooks/useMascotas";
 import iconoCorazon from "../assets/icono-corazon.png";
 
 const especies = ["Perro", "Gato"];
@@ -22,6 +22,7 @@ const tamanos = ["Todos", "Pequeño", "Mediano", "Grande"];
 const ubicaciones = ["Todas", "CABA", "Zona sur", "Zona norte", "Zona oeste", "La Plata", "Provincia de Buenos Aires", "Otra"];
 
 function BuscarMascotas() {
+  const mascotas = useMascotas();
   const [especie, setEspecie] = useState("Perro");
   const [raza, setRaza] = useState("Todas");
   const [sexo, setSexo] = useState("Todos");
@@ -92,10 +93,10 @@ function BuscarMascotas() {
             />
           </div>
 
-          <p className="buscar-resultados">{mascotasEjemplo.length} resultados encontrados</p>
+          <p className="buscar-resultados">{mascotas.length} resultados encontrados</p>
 
           <div className="tarjetas-grid">
-            {mascotasEjemplo.map((mascota) => (
+            {mascotas.map((mascota) => (
               <TarjetaMascotaInicio key={mascota.id} {...mascota} imagen={mascota.fotos[0]} />
             ))}
           </div>

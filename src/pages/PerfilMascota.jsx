@@ -4,7 +4,7 @@ import "./PerfilMascota.css";
 import AppSidebar from "../components/AppSidebar";
 import TopBar from "../components/TopBar";
 import { IconoTelefono, IconoMensaje } from "../components/Iconos";
-import { mascotasEjemplo } from "../data/mascotas";
+import { useMascotas } from "../hooks/useMascotas";
 import { useFavoritos } from "../hooks/useFavoritos";
 
 function IconoCheck() {
@@ -34,7 +34,8 @@ function CorazonGuardar({ activo }) {
 function PerfilMascota() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const mascota = mascotasEjemplo.find((m) => m.id === Number(id));
+  const mascotas = useMascotas();
+  const mascota = mascotas.find((m) => m.id === Number(id));
   const [fotoActual, setFotoActual] = useState(0);
   const { esFavorito, toggleFavorito } = useFavoritos();
 
@@ -70,8 +71,9 @@ function PerfilMascota() {
     ["Sexo", mascota.sexo],
     ["Peso", mascota.peso],
     ["Tamaño", mascota.tamano],
+    ["Color", mascota.color],
     ["Ubicación", mascota.ubicacion],
-  ];
+  ].filter(([, valor]) => valor);
 
   const itemsSalud = [
     { titulo: "Vacunas", ok: salud.vacunas, siTexto: "Al día", noTexto: "Pendiente" },
@@ -141,13 +143,22 @@ function PerfilMascota() {
                 </div>
               ))}
 
-              <div className="pf-contacto">
-                <p className="pf-contacto-titulo">Contacto del dueño</p>
-                <div className="pf-contacto-fila">
-                  <span><IconoTelefono /> {mascota.telefono}</span>
-                  <a href={`tel:${mascota.telefono}`}>Llamar</a>
+              {mascota.telefono && (
+                <div className="pf-contacto">
+                  <p className="pf-contacto-titulo">Contacto del dueño</p>
+                  <div className="pf-contacto-fila">
+                    <span><IconoTelefono /> {mascota.telefono}</span>
+                    <a href={`tel:${mascota.telefono}`}>Llamar</a>
+                  </div>
                 </div>
-              </div>
+              )}
+
+              {mascota.descripcion && (
+                <div className="pf-descripcion">
+                  <p className="pf-descripcion-titulo">Sobre {mascota.nombre}</p>
+                  <p>{mascota.descripcion}</p>
+                </div>
+              )}
             </div>
 
             <div className="pf-salud">

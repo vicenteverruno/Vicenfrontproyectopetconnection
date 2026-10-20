@@ -3,6 +3,7 @@ import AppSidebar from "../components/AppSidebar";
 import TopBar from "../components/TopBar";
 import TarjetaMascotaInicio from "../components/TarjetaMascotaInicio";
 import { mascotasEjemplo } from "../data/mascotas";
+import { useMascotas } from "../hooks/useMascotas";
 
 function CorazonRojo({ className }) {
   return (
@@ -13,6 +14,7 @@ function CorazonRojo({ className }) {
 }
 
 function Inicio() {
+  const mascotas = useMascotas();
   const bannerPerro = mascotasEjemplo[1].fotos[0];
 
   return (
@@ -39,7 +41,7 @@ function Inicio() {
           <h2 className="inicio-subtitulo">Mascotas recomendadas para vos</h2>
 
           <div className="tarjetas-grid">
-            {mascotasEjemplo.map((mascota) => (
+            {mascotas.map((mascota) => (
               <TarjetaMascotaInicio key={mascota.id} {...mascota} imagen={mascota.fotos[0]} />
             ))}
           </div>
