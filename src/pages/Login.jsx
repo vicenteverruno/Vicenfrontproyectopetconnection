@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import "./Auth.css";
 import AuthSidebar from "../components/AuthSidebar";
 import IconoOjo from "../components/IconoOjo";
@@ -9,7 +11,41 @@ import iconoPata from "../assets/icono-pata.png";
 
 function Login() {
   const [mostrarPassword, setMostrarPassword] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const navigate = useNavigate();
+
+  async function handleLogin(e) {
+    e.preventDefault();
+
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/usuario/login`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            mail: email,
+            password: password
+          })
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        alert(data.message || "Error al iniciar sesión");
+        return;
+      }
+
+      navigate("/buscar");
+    } catch (error) {
+      alert("No se pudo conectar con el servidor");
+      console.error(error);
+    }
+  }
 
   return (
     <div className="auth-page">
@@ -23,11 +59,18 @@ function Login() {
             <img src={iconoCorazon} alt="" className="inline-heart" />
           </p>
 
-          <form onSubmit={(e) => { e.preventDefault(); navigate("/buscar"); }}>
+          <form onSubmit={handleLogin}>
             <label htmlFor="email">Correo electrónico</label>
             <div className="auth-input">
               <img src={iconoMail} alt="" className="input-icon" />
-              <input id="email" type="email" placeholder="tuemail@gmail.com" />
+              <input
+                id="email"
+                type="email"
+                placeholder="tuemail@gmail.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
             </div>
 
             <label htmlFor="password">Contraseña</label>
@@ -37,6 +80,9 @@ function Login() {
                 id="password"
                 type={mostrarPassword ? "text" : "password"}
                 placeholder="Tu contraseña"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
               />
               <button
                 type="button"
@@ -60,7 +106,7 @@ function Login() {
           </p>
         </div>
       </main>
-    </div>
+    </div>  
   );
 }
 
