@@ -1,7 +1,5 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
 import "./Auth.css";
 import AuthSidebar from "../components/AuthSidebar";
 import IconoOjo from "../components/IconoOjo";
