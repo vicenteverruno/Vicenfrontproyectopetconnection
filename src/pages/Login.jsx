@@ -26,7 +26,7 @@ function Login() {
           },
           body: JSON.stringify({
             mail: email,
-            password: contraseña
+            contraseña: contraseña
           })
         }
       );
