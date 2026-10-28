@@ -10,7 +10,7 @@ import iconoPata from "../assets/icono-pata.png";
 function Login() {
   const [mostrarPassword, setMostrarPassword] = useState(false);
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [contraseña, setContraseña] = useState("");
   const navigate = useNavigate();
 
   async function handleLogin(e) {
@@ -78,8 +78,8 @@ function Login() {
                 id="password"
                 type={mostrarPassword ? "text" : "password"}
                 placeholder="Tu contraseña"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                value={contraseña}
+                onChange={(e) => setContraseña(e.target.value)}
                 required
               />
               <button
