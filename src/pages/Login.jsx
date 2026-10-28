@@ -10,7 +10,7 @@ import iconoPata from "../assets/icono-pata.png";
 function Login() {
   const [mostrarPassword, setMostrarPassword] = useState(false);
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [contraseña, setPassword] = useState("");
   const navigate = useNavigate();
 
   async function handleLogin(e) {
