@@ -6,28 +6,19 @@ import TopBar from "../components/TopBar";
 import { useMiMascota } from "../hooks/useMiMascota";
 import { ID_MI_MASCOTA, calcularEdad } from "../hooks/useMascotas";
 import { agregarNotificacion } from "../hooks/useNotificaciones";
-import { IconoPata, IconoCalendario, IconoUbicacion, IconoCorazon, IconoPeso, IconoTamano } from "../components/Iconos";
+import { IconoPata, IconoCalendario, IconoUbicacion, IconoTamano } from "../components/Iconos";
 
 const MAX_FOTOS = 8;
 
-const campos = [
-  { clave: "nombre", label: "Nombre", placeholder: "Ej: Rocky" },
-  { clave: "raza", label: "Raza", placeholder: "Ej: Golden Retriever" },
-  { clave: "fechaNacimiento", label: "Fecha de nacimiento", placeholder: "Ej: 23/01/2019" },
-  { clave: "sexo", label: "Sexo", placeholder: "Macho o Hembra" },
-  { clave: "peso", label: "Peso", placeholder: "Ej: 32 kg" },
-  { clave: "tamano", label: "Tamaño", placeholder: "Pequeño, mediano o grande" },
-  { clave: "color", label: "Color", placeholder: "Ej: Dorado" },
-  { clave: "ubicacion", label: "Ubicación", placeholder: "Ej: Palermo, CABA" },
-];
+const especiesDisponibles = ["Perro", "Gato"];
 
-function IconoCheckVerde() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1f7a35" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M20 6L9 17l-5-5" />
-    </svg>
-  );
-}
+const razasPorEspecie = {
+  Perro: ["Labrador", "Golden Retriever", "Pastor alemán", "Border collie", "Bulldog francés", "Caniche", "Beagle", "Husky siberiano", "Mestizo / Otro"],
+  Gato: ["Siamés", "Persa", "Maine coon", "Ragdoll", "Bengalí", "British shorthair", "Sphynx", "Mestizo / Otro"],
+};
+
+const sexosDisponibles = ["Macho", "Hembra"];
+const tamanosDisponibles = ["Pequeño", "Mediano", "Grande"];
 
 function IconoMas() {
   return (
@@ -37,15 +28,6 @@ function IconoMas() {
   );
 }
 
-function IconoColor() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z" />
-    </svg>
-  );
-}
-
-// Achica la foto y la convierte a texto para poder guardarla en el navegador
 function comprimirImagen(archivo, maxLado = 900, calidad = 0.8) {
   return new Promise((resolve, reject) => {
     const lector = new FileReader();
@@ -74,12 +56,16 @@ function MiMascota() {
   const [mascota, setMascota] = useMiMascota();
   const [modo, setModo] = useState(mascota.publicada ? "vista" : "edicion");
   const [fotoActual, setFotoActual] = useState(0);
-  const [confirmado, setConfirmado] = useState(false);
   const inputFotoRef = useRef(null);
 
-  const handleChange = (campo) => (e) => {
-    const valor = e.target.value;
-    setMascota((prev) => ({ ...prev, [campo]: valor }));
+  const handleChange = (campo, valor) => {
+    setMascota((prev) => {
+      const nuevo = { ...prev, [campo]: valor };
+      if (campo === "especie") {
+        nuevo.raza = razasPorEspecie[valor][0];
+      }
+      return nuevo;
+    });
   };
 
   const handleFotosSeleccionadas = async (e) => {
@@ -93,7 +79,7 @@ function MiMascota() {
       const nuevas = await Promise.all(aSubir.map((a) => comprimirImagen(a)));
       setMascota((prev) => ({ ...prev, fotos: [...prev.fotos, ...nuevas] }));
     } catch {
-      // Si alguna foto no se puede leer, la salteamos
+      // Ignorar fotos fallidas
     }
   };
 
@@ -105,13 +91,12 @@ function MiMascota() {
     setFotoActual(0);
   };
 
-  // Lo mínimo que tiene que tener una mascota para publicarse
   const faltantes = [];
   if (!(mascota.nombre || "").trim()) faltantes.push("el nombre");
-  if (!(mascota.raza || "").trim()) faltantes.push("la raza");
+  if (!mascota.fechaNacimiento) faltantes.push("la fecha de nacimiento");
   if (mascota.fotos.length === 0) faltantes.push("al menos una foto");
 
-  const puedeContinuar = confirmado && faltantes.length === 0;
+  const puedeContinuar = faltantes.length === 0;
 
   const handleContinuar = () => {
     if (!puedeContinuar) return;
@@ -133,9 +118,11 @@ function MiMascota() {
   };
 
   const abrirEdicion = () => {
-    setConfirmado(false);
     setModo("edicion");
   };
+
+  const especieActual = mascota.especie || "Perro";
+  const razasDisponibles = razasPorEspecie[especieActual] || razasPorEspecie.Perro;
 
   if (modo === "edicion") {
     return (
@@ -146,35 +133,134 @@ function MiMascota() {
 
           <div className="mimascota-content">
             <div className="mm-form">
-              <h1 className="mm-titulo">Confirmá los datos de tu mascota</h1>
+              <h1 className="mm-titulo">Carga los datos de tu mascota</h1>
               <p className="mm-subtitulo">
-                Revisá que la información de {mascota.nombre || "tu mascota"} sea correcta antes de continuar.
+                Completá la información requerida para dar a conocer a tu mascota.
               </p>
 
-              <h3 className="mm-seccion">Datos de la mascota</h3>
+              <h3 className="mm-seccion">Datos principales</h3>
 
               <div className="mm-grid">
-                {campos.map((c) => (
-                  <div key={c.clave} className="mm-campo">
-                    <label htmlFor={`mm-${c.clave}`}>{c.label}</label>
-                    <div className="mm-input">
-                      <input
-                        id={`mm-${c.clave}`}
-                        value={mascota[c.clave] || ""}
-                        onChange={handleChange(c.clave)}
-                        placeholder={c.placeholder}
-                      />
-                      <button
-                        type="button"
-                        className="mm-editar"
-                        onClick={() => document.getElementById(`mm-${c.clave}`)?.focus()}
-                      >
-                        Editar
-                      </button>
-                    </div>
+                {/* Especie */}
+                <div className="mm-campo">
+                  <label htmlFor="mm-especie">Especie</label>
+                  <div className="mm-input">
+                    <select
+                      id="mm-especie"
+                      value={especieActual}
+                      onChange={(e) => handleChange("especie", e.target.value)}
+                    >
+                      {especiesDisponibles.map((e) => (
+                        <option key={e} value={e}>{e}</option>
+                      ))}
+                    </select>
                   </div>
-                ))}
+                </div>
 
+                {/* Nombre */}
+                <div className="mm-campo">
+                  <label htmlFor="mm-nombre">Nombre</label>
+                  <div className="mm-input">
+                    <input
+                      id="mm-nombre"
+                      type="text"
+                      placeholder="Ej: Rocky"
+                      value={mascota.nombre || ""}
+                      onChange={(e) => handleChange("nombre", e.target.value)}
+                    />
+                  </div>
+                </div>
+
+                {/* Raza */}
+                <div className="mm-campo">
+                  <label htmlFor="mm-raza">Raza</label>
+                  <div className="mm-input">
+                    <select
+                      id="mm-raza"
+                      value={mascota.raza || razasDisponibles[0]}
+                      onChange={(e) => handleChange("raza", e.target.value)}
+                    >
+                      {razasDisponibles.map((r) => (
+                        <option key={r} value={r}>{r}</option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+
+                {/* Fecha de nacimiento */}
+                <div className="mm-campo">
+                  <label htmlFor="mm-fechaNacimiento">Fecha de nacimiento</label>
+                  <div className="mm-input">
+                    <input
+                      id="mm-fechaNacimiento"
+                      type="date"
+                      value={mascota.fechaNacimiento || ""}
+                      onChange={(e) => handleChange("fechaNacimiento", e.target.value)}
+                    />
+                  </div>
+                </div>
+
+                {/* Sexo */}
+                <div className="mm-campo">
+                  <label htmlFor="mm-sexo">Sexo</label>
+                  <div className="mm-input">
+                    <select
+                      id="mm-sexo"
+                      value={mascota.sexo || "Macho"}
+                      onChange={(e) => handleChange("sexo", e.target.value)}
+                    >
+                      {sexosDisponibles.map((s) => (
+                        <option key={s} value={s}>{s}</option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+
+                {/* Tamaño */}
+                <div className="mm-campo">
+                  <label htmlFor="mm-tamano">Tamaño</label>
+                  <div className="mm-input">
+                    <select
+                      id="mm-tamano"
+                      value={mascota.tamano || "Mediano"}
+                      onChange={(e) => handleChange("tamano", e.target.value)}
+                    >
+                      {tamanosDisponibles.map((t) => (
+                        <option key={t} value={t}>{t}</option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+
+                {/* Color */}
+                <div className="mm-campo">
+                  <label htmlFor="mm-color">Color</label>
+                  <div className="mm-input">
+                    <input
+                      id="mm-color"
+                      type="text"
+                      placeholder="Ej: Dorado"
+                      value={mascota.color || ""}
+                      onChange={(e) => handleChange("color", e.target.value)}
+                    />
+                  </div>
+                </div>
+
+                {/* Ubicación */}
+                <div className="mm-campo">
+                  <label htmlFor="mm-ubicacion">Ubicación</label>
+                  <div className="mm-input">
+                    <input
+                      id="mm-ubicacion"
+                      type="text"
+                      placeholder="Ej: Palermo, CABA"
+                      value={mascota.ubicacion || ""}
+                      onChange={(e) => handleChange("ubicacion", e.target.value)}
+                    />
+                  </div>
+                </div>
+
+                {/* Descripción */}
                 <div className="mm-campo mm-campo-ancho">
                   <label htmlFor="mm-descripcion">Descripción</label>
                   <div className="mm-input mm-input-area">
@@ -183,31 +269,13 @@ function MiMascota() {
                       rows={3}
                       maxLength={300}
                       value={mascota.descripcion || ""}
-                      onChange={handleChange("descripcion")}
-                      placeholder="Contá cómo es tu mascota: su carácter, si es juguetón, con quién se lleva bien..."
+                      onChange={(e) => handleChange("descripcion", e.target.value)}
+                      placeholder="Contá cómo es tu mascota..."
                     />
                   </div>
                   <span className="mm-contador">{(mascota.descripcion || "").length}/300</span>
                 </div>
               </div>
-
-              <h3 className="mm-seccion">Estado de salud</h3>
-              <div className="mm-salud">
-                <IconoCheckVerde />
-                <div>
-                  <strong>Salud verificada</strong>
-                  <p>Vacunas y controles al día</p>
-                </div>
-              </div>
-
-              <label className="mm-confirmar">
-                <input
-                  type="checkbox"
-                  checked={confirmado}
-                  onChange={(e) => setConfirmado(e.target.checked)}
-                />
-                Confirmo que los datos de mi mascota son correctos
-              </label>
 
               {mascota.fotos.length > 0 && (
                 <>
@@ -221,7 +289,6 @@ function MiMascota() {
                         <button
                           type="button"
                           className="mm-foto-x"
-                          aria-label="Eliminar foto"
                           onClick={() => handleEliminarFoto(index)}
                         >
                           ×
@@ -239,7 +306,7 @@ function MiMascota() {
                   disabled={mascota.fotos.length >= MAX_FOTOS}
                   onClick={() => inputFotoRef.current.click()}
                 >
-                  <IconoMas /> Subir fotos de tu mascota
+                  <IconoMas /> Subir fotos
                 </button>
                 <input
                   type="file"
@@ -256,12 +323,12 @@ function MiMascota() {
                   disabled={!puedeContinuar}
                   onClick={handleContinuar}
                 >
-                  Continuar
+                  Guardar y publicar
                 </button>
               </div>
 
               {faltantes.length > 0 && (
-                <p className="mm-aviso">Para continuar falta: {faltantes.join(", ")}.</p>
+                <p className="mm-aviso">Falta completar: {faltantes.join(", ")}.</p>
               )}
             </div>
           </div>
@@ -273,14 +340,12 @@ function MiMascota() {
   const esHembra = (mascota.sexo || "").toLowerCase().includes("hembra");
 
   const filasVista = [
+    { icono: <IconoPata />, label: "Especie", valor: mascota.especie },
     { icono: <IconoPata />, label: "Raza", valor: mascota.raza },
     { icono: <IconoCalendario />, label: "Edad", valor: calcularEdad(mascota.fechaNacimiento) },
     { icono: <span className="mimascota-simbolo">{esHembra ? "♀" : "♂"}</span>, label: "Sexo", valor: mascota.sexo },
-    { icono: <IconoPeso />, label: "Peso", valor: mascota.peso },
     { icono: <IconoTamano />, label: "Tamaño", valor: mascota.tamano },
-    { icono: <IconoColor />, label: "Color", valor: mascota.color },
     { icono: <IconoUbicacion />, label: "Ubicación", valor: mascota.ubicacion },
-    { icono: <IconoCorazon activo={true} />, label: "Salud", valor: mascota.salud },
   ].filter((fila) => fila.valor);
 
   return (
@@ -290,67 +355,87 @@ function MiMascota() {
         <TopBar sinBuscador />
 
         <div className="mimascota-content">
-          <h1 className="mimascota-titulo">Mi mascota</h1>
+          <div className="mimascota-header-acciones">
+            <h1 className="mimascota-titulo">Mis mascotas</h1>
+            <button
+              type="button"
+              className="mimascota-agregar-btn"
+              disabled={mascota.publicada}
+              onClick={abrirEdicion}
+              title={mascota.publicada ? "Solo podés tener una mascota registrada a la vez" : ""}
+            >
+              + Agregar mascota
+            </button>
+          </div>
 
-          {mascota.publicada && (
-            <div className="mimascota-publicada">
-              <span>
-                <IconoCheckVerde /> Tu mascota está publicada y se muestra en Inicio y Buscar.
-              </span>
-              <Link to={`/mascota/${ID_MI_MASCOTA}`}>Ver cómo la ven los demás</Link>
-            </div>
-          )}
+          {mascota.publicada ? (
+            <>
+              <div className="mimascota-publicada">
+                <span>Tu mascota está publicada y se muestra en la plataforma.</span>
+                <Link to={`/mascota/${ID_MI_MASCOTA}`} state={{ desdeMiMascota: true }}>
+                  Ver cómo la ven los demás
+                </Link>
+              </div>
 
-          <div className="mimascota-card">
-            <div className="mimascota-card-foto">
-              {mascota.fotos.length > 0 ? (
-                <>
-                  <img
-                    src={mascota.fotos[fotoActual]}
-                    alt={mascota.nombre}
-                    className="mimascota-foto-principal"
-                  />
-                  <div className="mimascota-miniaturas">
-                    {mascota.fotos.map((foto, index) => (
+              <div className="mimascota-card">
+                <div className="mimascota-card-foto">
+                  {mascota.fotos.length > 0 ? (
+                    <>
                       <img
-                        key={index}
-                        src={foto}
-                        alt=""
-                        className={index === fotoActual ? "activa" : ""}
-                        onClick={() => setFotoActual(index)}
+                        src={mascota.fotos[fotoActual]}
+                        alt={mascota.nombre}
+                        className="mimascota-foto-principal"
                       />
-                    ))}
-                  </div>
-                </>
-              ) : (
-                <div className="mimascota-sin-foto">Sin fotos todavía</div>
-              )}
-            </div>
-
-            <div className="mimascota-card-info">
-              <h2>{mascota.nombre}</h2>
-              <p className="mimascota-card-raza">{mascota.raza}</p>
-
-              <ul>
-                {filasVista.map((fila) => (
-                  <li key={fila.label}>
-                    {fila.icono} <strong>{fila.label}:</strong> {fila.valor}
-                  </li>
-                ))}
-              </ul>
-
-              {mascota.descripcion && (
-                <div className="mimascota-descripcion">
-                  <strong>Descripción</strong>
-                  <p>{mascota.descripcion}</p>
+                      <div className="mimascota-miniaturas">
+                        {mascota.fotos.map((foto, index) => (
+                          <img
+                            key={index}
+                            src={foto}
+                            alt=""
+                            className={index === fotoActual ? "activa" : ""}
+                            onClick={() => setFotoActual(index)}
+                          />
+                        ))}
+                      </div>
+                    </>
+                  ) : (
+                    <div className="mimascota-sin-foto">Sin fotos todavía</div>
+                  )}
                 </div>
-              )}
 
-              <button type="button" className="mimascota-editar-btn" onClick={abrirEdicion}>
-                Editar perfil
+                <div className="mimascota-card-info">
+                  <h2>{mascota.nombre}</h2>
+                  <p className="mimascota-card-raza">{mascota.raza}</p>
+
+                  <ul>
+                    {filasVista.map((fila) => (
+                      <li key={fila.label}>
+                        {fila.icono} <strong>{fila.label}:</strong> {fila.valor}
+                      </li>
+                    ))}
+                  </ul>
+
+                  {mascota.descripcion && (
+                    <div className="mimascota-descripcion">
+                      <strong>Descripción</strong>
+                      <p>{mascota.descripcion}</p>
+                    </div>
+                  )}
+
+                  <button type="button" className="mimascota-editar-btn" onClick={abrirEdicion}>
+                    Editar perfil
+                  </button>
+                </div>
+              </div>
+            </>
+          ) : (
+            <div className="mimascota-vacio-box">
+              <p>No tenés ninguna mascota registrada todavía.</p>
+              <button type="button" className="mm-continuar" onClick={abrirEdicion}>
+                Crear perfil de mi mascota
               </button>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </div>

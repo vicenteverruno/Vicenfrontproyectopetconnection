@@ -2,7 +2,37 @@
   padding: 14px 32px 40px;
 }
 
-/* ---------- Formulario (modo edición) ---------- */
+.mimascota-header-acciones {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.mimascota-titulo {
+  font-size: 28px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+}
+
+.mimascota-agregar-btn {
+  background: #2e7d32;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 9px 18px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.mimascota-agregar-btn:disabled {
+  background: #a8c9ae;
+  cursor: not-allowed;
+}
+
+/* ---------- Formulario ---------- */
 .mm-form {
   max-width: 820px;
 }
@@ -55,11 +85,8 @@
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
 }
 
-.mm-input:focus-within {
-  border-color: #2e7d32;
-}
-
 .mm-input input,
+.mm-input select,
 .mm-input textarea {
   flex: 1;
   border: none;
@@ -75,20 +102,6 @@
   resize: vertical;
 }
 
-.mm-input-area {
-  align-items: flex-start;
-}
-
-.mm-editar {
-  background: none;
-  border: none;
-  color: #2e7d32;
-  font-size: 11px;
-  font-weight: 700;
-  cursor: pointer;
-  padding: 0;
-}
-
 .mm-contador {
   display: block;
   text-align: right;
@@ -97,53 +110,10 @@
   margin-top: 4px;
 }
 
-.mm-salud {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  background: #e8f3ea;
-  border-radius: 10px;
-  padding: 12px 16px;
-}
-
-.mm-salud svg {
-  margin-top: 3px;
-  flex-shrink: 0;
-}
-
-.mm-salud strong {
-  display: block;
-  font-size: 13px;
-  color: #1f7a35;
-}
-
-.mm-salud p {
-  margin: 2px 0 0;
-  font-size: 11px;
-  color: #6b7280;
-}
-
-.mm-confirmar {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin: 18px 0 20px;
-  font-size: 13px;
-  color: #111827;
-  cursor: pointer;
-}
-
-.mm-confirmar input {
-  width: 16px;
-  height: 16px;
-  accent-color: #2e7d32;
-  cursor: pointer;
-}
-
 .mm-fotos-titulo {
   font-size: 12px;
   color: #6b7280;
-  margin: 0 0 8px;
+  margin: 16px 0 8px;
 }
 
 .mm-fotos {
@@ -190,6 +160,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-top: 20px;
 }
 
 .mm-subir {
@@ -215,7 +186,7 @@
   color: white;
   border: none;
   border-radius: 8px;
-  padding: 12px 60px;
+  padding: 12px 40px;
   font-size: 14px;
   font-weight: 700;
   cursor: pointer;
@@ -236,12 +207,15 @@
   margin: 10px 0 0;
 }
 
-/* ---------- Vista (modo normal) ---------- */
-.mimascota-titulo {
-  font-size: 28px;
-  font-weight: 700;
-  color: #111827;
-  margin: 8px 0 20px;
+/* ---------- Vista ---------- */
+.mimascota-vacio-box {
+  background: #f9fafb;
+  border: 1px dashed #d1d5db;
+  border-radius: 12px;
+  padding: 40px;
+  text-align: center;
+  max-width: 600px;
+  margin-top: 20px;
 }
 
 .mimascota-card {
@@ -364,6 +338,7 @@
   font-size: 15px;
   cursor: pointer;
 }
+
 .mimascota-publicada {
   display: flex;
   align-items: center;
@@ -376,12 +351,6 @@
   margin-bottom: 18px;
   font-size: 14px;
   color: #1f3320;
-}
-
-.mimascota-publicada span {
-  display: flex;
-  align-items: center;
-  gap: 8px;
 }
 
 .mimascota-publicada a {

@@ -1,14 +1,24 @@
 import "./TarjetaMascota.css";
-import { Link } from "react-router-dom";
-import { IconoPata, IconoCalendario, IconoUbicacion, IconoMensaje, IconoCorazon } from "./Iconos";
+import { useNavigate } from "react-router-dom";
+import { IconoPata, IconoCalendario, IconoUbicacion, IconoCorazon } from "./Iconos";
 import { useFavoritos } from "../hooks/useFavoritos";
 
 function TarjetaMascotaInicio({ id, imagen, nombre, raza, edad, sexo, ubicacion, esMia }) {
+  const navigate = useNavigate();
   const { esFavorito, toggleFavorito } = useFavoritos();
   const favorito = esFavorito(id);
 
+  const irAlPerfil = () => {
+    navigate(`/mascota/${id}`);
+  };
+
+  const handleFavoritoClick = (e) => {
+    e.stopPropagation(); // Evita redirigir al clickear el corazón
+    toggleFavorito(id);
+  };
+
   return (
-    <div className="tm-card">
+    <div className="tm-card" onClick={irAlPerfil}>
       <img src={imagen} alt={nombre} className="tm-img" />
 
       <div className="tm-info">
@@ -25,15 +35,12 @@ function TarjetaMascotaInicio({ id, imagen, nombre, raza, edad, sexo, ubicacion,
         <p className="tm-detalle"><IconoUbicacion /> {ubicacion}</p>
 
         <div className="tm-footer">
-          <Link to={`/mascota/${id}`} className="tm-btn">
+          <button type="button" className="tm-btn" onClick={irAlPerfil}>
             Ver perfil
-          </Link>
+          </button>
 
           <div className="tm-acciones">
-            <button type="button" className="tm-circulo">
-              <IconoMensaje />
-            </button>
-            <button type="button" className="tm-circulo" onClick={() => toggleFavorito(id)}>
+            <button type="button" className="tm-circulo" onClick={handleFavoritoClick}>
               <IconoCorazon activo={favorito} />
             </button>
           </div>

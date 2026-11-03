@@ -1,14 +1,13 @@
 export const miMascotaInicial = {
+  especie: "Perro",
   nombre: "",
   raza: "",
   fechaNacimiento: "",
-  sexo: "",
-  peso: "",
-  tamano: "",
+  sexo: "Macho",
+  tamano: "Mediano",
   color: "",
   ubicacion: "",
   descripcion: "",
-  salud: "Vacunado, sin antecedentes",
   publicada: false,
   fotos: [],
 };

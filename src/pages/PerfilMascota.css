@@ -141,7 +141,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 13px 0;
+  padding: 11px 0;
   border-bottom: 1px solid #e5e7eb;
   font-size: 14px;
 }
@@ -156,94 +156,40 @@
 }
 
 .pf-contacto {
-  margin-top: 20px;
+  margin-top: 18px;
   background: #e8f3ea;
   border-radius: 10px;
   padding: 14px 18px;
 }
 
 .pf-contacto-titulo {
-  font-size: 13px;
-  font-weight: 700;
-  color: #111827;
-  margin: 0 0 8px;
-}
-
-.pf-contacto-fila {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   font-size: 14px;
+  font-weight: 700;
   color: #111827;
+  margin: 0 0 10px;
 }
 
-.pf-contacto-fila span {
+.pf-contacto-item {
+  font-size: 13.5px;
+  color: #111827;
+  margin-bottom: 8px;
+}
+
+.pf-contacto-detalles {
+  margin-top: 4px;
   display: flex;
-  align-items: center;
-  gap: 8px;
+  flex-direction: column;
+  gap: 4px;
 }
 
-.pf-contacto-fila a {
-  color: #2e7d32;
-  font-weight: 700;
-  text-decoration: none;
-}
-
-/* Salud */
-.pf-salud {
-  grid-column: 1 / -1;
-  border: 1px solid #e5e7eb;
-  border-radius: 14px;
-  padding: 18px 24px 22px;
-}
-
-.pf-salud h3 {
-  font-size: 20px;
-  font-weight: 700;
-  color: #111827;
-  margin: 0 0 12px;
-}
-
-.pf-salud-banner {
-  background: #e8f3ea;
-  border-radius: 8px;
-  padding: 10px 14px;
-  margin-bottom: 18px;
-}
-
-.pf-salud-banner strong {
+.pf-contacto-detalles p {
   display: flex;
   align-items: center;
   gap: 6px;
-  color: #2e7d32;
-  font-size: 14px;
+  margin: 0;
+  color: #374151;
 }
 
-.pf-salud-banner p {
-  margin: 2px 0 0 18px;
-  font-size: 12px;
-  color: #4b5563;
-}
-
-.pf-salud-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 18px 24px;
-}
-
-.pf-salud-item strong {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 14px;
-  color: #111827;
-}
-
-.pf-salud-item p {
-  margin: 2px 0 0 20px;
-  font-size: 12px;
-  color: #6b7280;
-}
 .pf-descripcion {
   margin-top: 16px;
   border: 1px solid #e5e7eb;

@@ -8,8 +8,19 @@ import iconoCorazon from "../assets/icono-corazon.png";
 import iconoPata from "../assets/icono-pata.png";
 
 function Registro() {
+  const [nombre, setNombre] = useState("");
+  const [apellido, setApellido] = useState("");
+  const [telefono, setTelefono] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [mostrarPassword, setMostrarPassword] = useState(false);
   const navigate = useNavigate();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Redirige al flujo principal tras registrarse
+    navigate("/buscar");
+  };
 
   return (
     <div className="auth-page">
@@ -18,15 +29,58 @@ function Registro() {
       <main className="auth-content">
         <div className="auth-form-box">
           <h2>
-            Crea una cuenta
+            Creá una cuenta
             <img src={iconoCorazon} alt="" className="inline-heart" />
           </h2>
 
-          <form onSubmit={(e) => { e.preventDefault(); navigate("/buscar"); }}>
+          <form onSubmit={handleSubmit}>
+            <label htmlFor="nombre">Nombre</label>
+            <div className="auth-input">
+              <input
+                id="nombre"
+                type="text"
+                placeholder="Tu nombre"
+                value={nombre}
+                onChange={(e) => setNombre(e.target.value)}
+                required
+              />
+            </div>
+
+            <label htmlFor="apellido">Apellido</label>
+            <div className="auth-input">
+              <input
+                id="apellido"
+                type="text"
+                placeholder="Tu apellido"
+                value={apellido}
+                onChange={(e) => setApellido(e.target.value)}
+                required
+              />
+            </div>
+
+            <label htmlFor="telefono">Teléfono</label>
+            <div className="auth-input">
+              <input
+                id="telefono"
+                type="tel"
+                placeholder="+54 11 1234-5678"
+                value={telefono}
+                onChange={(e) => setTelefono(e.target.value)}
+                required
+              />
+            </div>
+
             <label htmlFor="email">Correo electrónico</label>
             <div className="auth-input">
               <img src={iconoMail} alt="" className="input-icon" />
-              <input id="email" type="email" placeholder="tuemail@gmail.com" />
+              <input
+                id="email"
+                type="email"
+                placeholder="tuemail@gmail.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
             </div>
 
             <label htmlFor="password">Contraseña</label>
@@ -36,6 +90,9 @@ function Registro() {
                 id="password"
                 type={mostrarPassword ? "text" : "password"}
                 placeholder="Tu contraseña"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
               />
               <button
                 type="button"

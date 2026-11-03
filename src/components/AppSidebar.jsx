@@ -36,7 +36,7 @@ function AppSidebar() {
         </NavLink>
         <NavLink to="/mi-mascota" className="app-sidebar-link">
           <img src={iconoPata} alt="" className="app-sidebar-icon app-sidebar-icon-pata" />
-          Mi mascota
+          Mis mascotas
         </NavLink>
         <NavLink to="/notificaciones" className="app-sidebar-link">
           <img src={iconoNotificaciones} alt="" className="app-sidebar-icon" />
