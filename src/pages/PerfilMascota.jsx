@@ -125,7 +125,7 @@ function PerfilMascota() {
               <div className="pf-contacto">
                 <p className="pf-contacto-titulo">Datos del dueño</p>
                 <p className="pf-contacto-item">
-                  <strong>Dueño:</strong> {mascota.dueno || "Martina"}
+                  <strong>Nombre:</strong> {mascota.dueno || "Martina"}
                 </p>
                 <div className="pf-contacto-item">
                   <strong>Contacto:</strong>
