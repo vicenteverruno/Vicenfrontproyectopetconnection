@@ -16,11 +16,43 @@ function Registro() {
   const [mostrarPassword, setMostrarPassword] = useState(false);
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Redirige al flujo principal tras registrarse
-    navigate("/buscar");
-  };
+
+    try {
+        const response = await fetch(
+            `${import.meta.env.VITE_API_URL}/usuario/registro`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    nombre: nombre,
+                    apellido: apellido,
+                    mail: email,
+                    telefono: telefono,
+                    contraseña: password
+                })
+            }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            alert(data.message || "Error al registrarse");
+            return;
+        }
+
+        alert("¡Usuario registrado correctamente!");
+
+        navigate("/");
+
+    } catch (error) {
+        console.error("Error al registrar usuario:", error);
+        alert("No se pudo conectar con el servidor");
+    }
+};
 
   return (
     <div className="auth-page">
