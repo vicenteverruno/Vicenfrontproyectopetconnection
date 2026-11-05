@@ -4,7 +4,7 @@ import "./MiMascota.css";
 import AppSidebar from "../components/AppSidebar";
 import TopBar from "../components/TopBar";
 import { useMiMascota } from "../hooks/useMiMascota";
-import { ID_MI_MASCOTA, calcularEdad } from "../hooks/useMascotas";
+import { calcularEdad } from "../hooks/useMascotas";
 import { agregarNotificacion } from "../hooks/useNotificaciones";
 import { IconoPata, IconoCalendario, IconoUbicacion, IconoTamano } from "../components/Iconos";
 
@@ -92,33 +92,86 @@ function MiMascota() {
   };
 
   const faltantes = [];
-  if (!(mascota.nombre || "").trim()) faltantes.push("el nombre");
-  if (!mascota.fechaNacimiento) faltantes.push("la fecha de nacimiento");
-  if (mascota.fotos.length === 0) faltantes.push("al menos una foto");
+if (!(mascota.nombre || "").trim()) faltantes.push("el nombre");
+if (!mascota.fechaNacimiento) faltantes.push("la fecha de nacimiento");
+if (!(mascota.raza || "").trim()) faltantes.push("la raza");
+if (!(mascota.color || "").trim()) faltantes.push("el color");
+if (!(mascota.ubicacion || "").trim()) faltantes.push("la ubicación");
+if (mascota.fotos.length === 0) faltantes.push("al menos una foto");
 
   const puedeContinuar = faltantes.length === 0;
 
-  const handleContinuar = () => {
+  const handleContinuar = async () => {
     if (!puedeContinuar) return;
 
-    const yaEstabaPublicada = mascota.publicada;
-    setMascota((prev) => ({ ...prev, publicada: true }));
-
-    if (!yaEstabaPublicada) {
-      agregarNotificacion({
-        tipo: "publicada",
-        titulo: "¡Tu mascota ya está publicada!",
-        descripcion: `${mascota.nombre} ya aparece en Inicio y Buscar para que otros usuarios la vean.`,
-        link: `/mascota/${ID_MI_MASCOTA}`,
-      });
+    if (mascota.publicada) {
+        alert("La edición de mascotas todavía no está conectada al servidor.");
+        return;
     }
 
-    setFotoActual(0);
-    setModo("vista");
-  };
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+        alert("Debes iniciar sesión nuevamente.");
+        return;
+    }
+
+    try {
+        const response = await fetch(
+            `${import.meta.env.VITE_API_URL}/mascota`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    nombre: mascota.nombre,
+                    especie: mascota.especie,
+                    raza: mascota.raza || razasDisponibles[0],
+                    sexo: mascota.sexo,
+                    nacimiento: mascota.fechaNacimiento,
+                    tamaño: mascota.tamano,
+                    color: mascota.color,
+                    ubicacion: mascota.ubicacion,
+                    descripcion: mascota.descripcion
+                })
+            }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            alert(data.message || data.error || "No se pudo publicar la mascota");
+            return;
+        }
+
+        setMascota((prev) => ({
+            ...prev,
+            publicada: true,
+            idMascota: data.id
+        }));
+
+        agregarNotificacion({
+            tipo: "publicada",
+            titulo: "¡Tu mascota ya está publicada!",
+            descripcion: `${mascota.nombre} ya fue publicada correctamente.`,
+            link: `/mascota/${data.id}`,
+        });
+
+        setFotoActual(0);
+        setModo("vista");
+
+        alert("¡Mascota publicada correctamente!");
+
+    } catch (error) {
+        console.error("Error al publicar mascota:", error);
+        alert("No se pudo conectar con el servidor");
+    }
+};
 
   const abrirEdicion = () => {
-    setModo("edicion");
+    setModo("edicion"); 
   };
 
   const especieActual = mascota.especie || "Perro";
@@ -372,7 +425,7 @@ function MiMascota() {
             <>
               <div className="mimascota-publicada">
                 <span>Tu mascota está publicada y se muestra en la plataforma.</span>
-                <Link to={`/mascota/${ID_MI_MASCOTA}`} state={{ desdeMiMascota: true }}>
+                <Link to={`/mascota/${mascota.idMascota}`} state={{ desdeMiMascota: true }}>
                   Ver cómo la ven los demás
                 </Link>
               </div>

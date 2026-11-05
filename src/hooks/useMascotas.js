@@ -1,7 +1,6 @@
 import { mascotasEjemplo } from "../data/mascotas";
 import { useMiMascota } from "./useMiMascota";
-
-export const ID_MI_MASCOTA = 1000;
+  
 
 export function calcularEdad(texto) {
   const t = (texto || "").trim();
@@ -35,7 +34,7 @@ function capitalizar(texto) {
 
 function miMascotaAMascota(m) {
   return {
-    id: ID_MI_MASCOTA,
+    id: m.idMascota,
     esMia: true,
     especie: m.especie || "Perro",
     nombre: (m.nombre || "").trim(),

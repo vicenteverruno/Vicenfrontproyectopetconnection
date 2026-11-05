@@ -34,11 +34,13 @@ function Login() {
       const data = await response.json();
 
       if (!response.ok) {
-        alert(data.message || "Error al iniciar sesión");
-        return;
-      }
+    alert(data.message || "Error al iniciar sesión");
+    return;
+}
 
-      navigate("/buscar");
+localStorage.setItem("token", data.token);
+
+navigate("/buscar");
     } catch (error) {
       alert("No se pudo conectar con el servidor");
       console.error(error);
