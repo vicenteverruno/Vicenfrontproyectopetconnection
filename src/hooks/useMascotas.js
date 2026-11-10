@@ -47,9 +47,9 @@ function filaAMascota(m, idMiMascota) {
     esMia,
     especie: m.especie,
     nombre: (m.nombre || "").trim(),
-    dueno: esMia ? "vos" : "otro usuario", // el back todavía no devuelve el dueño
+    dueno: esMia ? "vos" : "otro usuario",
+    idDueno: m.id_usuario,
     raza: capitalizar(m.raza),
-    nacimiento, // AGREGADO: lo usa el filtro de edad de la búsqueda
     edad: calcularEdad(nacimiento),
     sexo: (m.sexo || "").toLowerCase().includes("hembra") ? "Hembra" : "Macho",
     tamano: capitalizar(m["tamaño"]),
@@ -58,8 +58,6 @@ function filaAMascota(m, idMiMascota) {
     descripcion: m.descripcion,
     // Datos que todavía no existen en el back: quedan vacíos para que nada se rompa
     peso: "",
-    telefono: "",
-    email: "",
     salud: {},
     // Las fotos no se guardan en la base de datos (por ahora)
     fotos: [],

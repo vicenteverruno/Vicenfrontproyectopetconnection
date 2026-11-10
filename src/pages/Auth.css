@@ -134,6 +134,16 @@
   color: #6b7280;
 }
 
+.auth-input.auth-input-error {
+  border-color: #dc2626;
+}
+
+.auth-error {
+  color: #dc2626;
+  font-size: 13px;
+  margin: 6px 0 0 18px;
+}
+
 .input-icon {
   width: 20px;
   height: 20px;

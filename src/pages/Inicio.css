@@ -64,10 +64,6 @@
 }
 
 /* Barra de arriba (es la misma en todas las páginas) */
-.app-topbar .app-search {
-  border: 1.5px solid #111827;
-}
-
 .app-topbar .app-topbar-icon-link {
   position: relative;
 }

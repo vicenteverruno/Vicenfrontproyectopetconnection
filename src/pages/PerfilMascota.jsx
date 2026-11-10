@@ -5,7 +5,8 @@ import AppSidebar from "../components/AppSidebar";
 import TopBar from "../components/TopBar";
 import { IconoTelefono, IconoEmail, IconoMensaje } from "../components/Iconos";
 import { useMascotas } from "../hooks/useMascotas";
-import { useFavoritos } from "../hooks/useFavoritos";
+import { useLike } from "../hooks/useLike";
+import { useUsuario } from "../hooks/useUsuario";
 
 function CorazonGuardar({ activo }) {
   return (
@@ -22,10 +23,12 @@ function PerfilMascota() {
   const mascotas = useMascotas();
   const mascota = mascotas.find((m) => m.id === Number(id));
   const [fotoActual, setFotoActual] = useState(0);
-  const { esFavorito, toggleFavorito } = useFavoritos();
+  const { favorito, alternarLike } = useLike(Number(id), mascota?.nombre);
+  const { usuario: dueno, cargado: duenoCargado } = useUsuario(mascota?.idDueno ?? null);
 
   // Determinar la ruta de retorno
-  const vieneDeMisMascotas = location.state?.desdeMiMascota || mascota?.esMia;
+  const esVistaPrevia = location.state?.desdeMiMascota;
+  const vieneDeMisMascotas = esVistaPrevia || mascota?.esMia;
   const volverRuta = vieneDeMisMascotas ? "/mi-mascota" : "/buscar";
 
   if (!mascota) {
@@ -44,7 +47,6 @@ function PerfilMascota() {
   }
 
   const total = mascota.fotos.length;
-  const guardada = esFavorito(mascota.id);
 
   const anterior = () => setFotoActual((a) => (a === 0 ? total - 1 : a - 1));
   const siguiente = () => setFotoActual((a) => (a === total - 1 ? 0 : a + 1));
@@ -69,6 +71,13 @@ function PerfilMascota() {
         <TopBar volverA={volverRuta} />
 
         <div className="pf-contenido">
+          {esVistaPrevia && (
+            <div className="pf-vista-previa">
+              <span>Estás viendo el perfil de {mascota.nombre} como lo ven los demás.</span>
+              <Link to="/mi-mascota">Salir de esta vista</Link>
+            </div>
+          )}
+
           <div className="pf-grid">
             <div className="pf-galeria">
               <div className="pf-foto">
@@ -98,9 +107,11 @@ function PerfilMascota() {
               </div>
 
               <div className="pf-acciones">
-                <button type="button" className="pf-accion" onClick={() => toggleFavorito(mascota.id)}>
-                  <CorazonGuardar activo={guardada} /> Guardar
-                </button>
+                {!mascota.esMia && (
+                  <button type="button" className="pf-accion" onClick={alternarLike}>
+                    <CorazonGuardar activo={favorito} /> Guardar
+                  </button>
+                )}
                 <button
                   type="button"
                   className="pf-accion comentar"
@@ -124,16 +135,24 @@ function PerfilMascota() {
 
               <div className="pf-contacto">
                 <p className="pf-contacto-titulo">Datos del dueño</p>
-                <p className="pf-contacto-item">
-                  <strong>Nombre:</strong> {mascota.dueno || "Martina"}
-                </p>
-                <div className="pf-contacto-item">
-                  <strong>Contacto:</strong>
-                  <div className="pf-contacto-detalles">
-                    <p><IconoEmail /> {mascota.email || "contacto@petconnection.com"}</p>
-                    <p><IconoTelefono /> {mascota.telefono || "+54 11 5555-1234"}</p>
-                  </div>
-                </div>
+                {dueno ? (
+                  <>
+                    <p className="pf-contacto-item">
+                      <strong>Nombre:</strong> {dueno.nombre} {dueno.apellido}
+                    </p>
+                    <div className="pf-contacto-item">
+                      <strong>Contacto:</strong>
+                      <div className="pf-contacto-detalles">
+                        <p><IconoEmail /> {dueno.mail}</p>
+                        <p><IconoTelefono /> {dueno.telefono}</p>
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  <p className="pf-contacto-item">
+                    {duenoCargado ? "Los datos del dueño no están disponibles." : "Cargando..."}
+                  </p>
+                )}
               </div>
 
               {mascota.descripcion && (

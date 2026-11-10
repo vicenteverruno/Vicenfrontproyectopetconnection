@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react"; // CAMBIADO: se agrega useCallback
 import { apiFetch } from "../api"; // AGREGADO
+import { avisar } from "../avisos";
 import { useMiMascota } from "./useMiMascota"; // AGREGADO: para saber el id de TU mascota
  
 // SACADO: const CLAVE = "petconnection_comentarios";
@@ -50,7 +51,7 @@ export function useComentarios(mascotaId) {
   // CAMBIADO: antes guardaba en localStorage, ahora lo manda al back (POST /comentario)
   const agregarComentario = async (texto) => {
     if (!miMascota.idMascota) {
-      alert("Primero tenés que publicar tu mascota para poder comentar.");
+      avisar("Primero tenés que publicar tu mascota para poder comentar.");
       return;
     }
  
@@ -67,13 +68,13 @@ export function useComentarios(mascotaId) {
       const data = await response.json();
  
       if (!response.ok) {
-        alert(data.message || "No se pudo enviar el comentario");
+        avisar(data.message || "No se pudo enviar el comentario");
         return;
       }
  
       await cargar(); // vuelve a pedir la lista para que aparezca el comentario nuevo
     } catch (error) {
-      alert("No se pudo conectar con el servidor");
+      avisar("No se pudo conectar con el servidor");
       console.error(error);
     }
   };

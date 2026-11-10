@@ -8,13 +8,15 @@ import Comentarios from "./pages/Comentarios";
 import MiMascota from "./pages/MiMascota";
 import Notificaciones from "./pages/Notificaciones";
 import Configuracion from "./pages/Configuracion";
-import CambiarPassword from "./pages/CambiarPassword";
 import AyudaSoporte from "./pages/AyudaSoporte";
 import Favoritos from "./pages/Favoritos";
+import MiPerfil from "./pages/MiPerfil";
+import Avisos from "./components/Avisos";
 
 function App() {
   return (
     <BrowserRouter>
+      <Avisos />
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/registro" element={<Registro />} />
@@ -25,7 +27,7 @@ function App() {
         <Route path="/mi-mascota" element={<MiMascota />} />
         <Route path="/notificaciones" element={<Notificaciones />} />
         <Route path="/configuracion" element={<Configuracion />} />
-        <Route path="/cambiar-contrasena" element={<CambiarPassword />} />
+        <Route path="/perfil" element={<MiPerfil />} />
         <Route path="/ayuda-soporte" element={<AyudaSoporte />} />
         <Route path="/favoritos" element={<Favoritos />} />
       </Routes>

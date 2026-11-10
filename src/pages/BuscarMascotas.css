@@ -93,23 +93,6 @@
   gap: 24px;
 }
 
-.app-search {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  border: 1px solid #d1d5db;
-  border-radius: 20px;
-  padding: 14px 24px;
-  flex: 1;
-}
-
-.app-search input {
-  border: none;
-  outline: none;
-  flex: 1;
-  font-size: 15px;
-}
-
 .app-topbar-icons {
   display: flex;
   gap: 18px;

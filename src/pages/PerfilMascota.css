@@ -10,6 +10,26 @@
   margin-bottom: 12px;
 }
 
+.pf-vista-previa {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  background: #e8f3ea;
+  border-radius: 10px;
+  padding: 12px 18px;
+  margin-bottom: 14px;
+  font-size: 14px;
+  color: #1f3320;
+}
+
+.pf-vista-previa a {
+  color: #2e7d32;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
 .pf-grid {
   display: grid;
   grid-template-columns: 1.5fr 1fr;

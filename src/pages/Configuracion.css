@@ -55,35 +55,20 @@
     color: #dc2626;
   }
   
-  /* Interruptor (toggle) */
-  .config-toggle {
-    width: 42px;
-    height: 24px;
-    border-radius: 999px;
-    border: none;
-    background: #d1d5db;
-    padding: 3px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    transition: background 0.2s ease;
+  .perfil-fila {
+    cursor: default;
   }
-  
-  .config-toggle.activo {
-    background: #3f8b4c;
+
+  .perfil-fila span {
+    color: #111827;
+    font-weight: 600;
   }
-  
-  .config-toggle-bola {
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    background: white;
-    transition: transform 0.2s ease;
+
+  .perfil-link {
+    text-decoration: none;
+    border-bottom: none;
   }
-  
-  .config-toggle.activo .config-toggle-bola {
-    transform: translateX(18px);
-  }
+
   .config-card {
     position: relative;
   }

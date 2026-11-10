@@ -1,11 +1,13 @@
 import { useState, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import "./MiMascota.css";
 import AppSidebar from "../components/AppSidebar";
 import TopBar from "../components/TopBar";
-import { useMiMascota } from "../hooks/useMiMascota";
+import SelectorFecha from "../components/SelectorFecha";
+import { useMisMascotas, guardarMascota, elegirActiva } from "../hooks/useMiMascota";
 import { calcularEdad } from "../hooks/useMascotas";
-import { agregarNotificacion } from "../hooks/useNotificaciones";
+import { avisar } from "../avisos";
+import { miMascotaInicial } from "../data/miMascota";
 import { IconoPata, IconoCalendario, IconoUbicacion, IconoTamano } from "../components/Iconos";
 
 const MAX_FOTOS = 8;
@@ -53,10 +55,17 @@ function comprimirImagen(archivo, maxLado = 900, calidad = 0.8) {
 }
 
 function MiMascota() {
-  const [mascota, setMascota] = useMiMascota();
-  const [modo, setModo] = useState(mascota.publicada ? "vista" : "edicion");
+  const { mascotas, activa, cargado } = useMisMascotas();
+  const location = useLocation();
+  // Copia que se edita en el formulario. Si es null, se está viendo la mascota.
+  const [borrador, setMascota] = useState(() =>
+    location.state?.editar && activa ? { ...activa } : null
+  );
+  const mascota = borrador ?? activa ?? miMascotaInicial;
   const [fotoActual, setFotoActual] = useState(0);
+  const [guardando, setGuardando] = useState(false);
   const inputFotoRef = useRef(null);
+  const creando = !mascota.idMascota;
 
   const handleChange = (campo, valor) => {
     setMascota((prev) => {
@@ -97,96 +106,57 @@ if (!mascota.fechaNacimiento) faltantes.push("la fecha de nacimiento");
 if (!(mascota.raza || "").trim()) faltantes.push("la raza");
 if (!(mascota.color || "").trim()) faltantes.push("el color");
 if (!(mascota.ubicacion || "").trim()) faltantes.push("la ubicación");
-if (mascota.fotos.length === 0) faltantes.push("al menos una foto");
+// Las fotos solo se guardan en este navegador: al editar desde otro no tienen que ser obligatorias
+if (creando && mascota.fotos.length === 0) faltantes.push("al menos una foto");
 
-  const puedeContinuar = faltantes.length === 0;
+  const puedeContinuar = faltantes.length === 0 && !guardando;
 
   const handleContinuar = async () => {
     if (!puedeContinuar) return;
 
-    if (mascota.publicada) {
-        alert("La edición de mascotas todavía no está conectada al servidor.");
-        return;
-    }
-
-    const token = localStorage.getItem("token");
-
-    if (!token) {
-        alert("Debes iniciar sesión nuevamente.");
-        return;
-    }
+    setGuardando(true);
 
     try {
-        const response = await fetch(
-            `${import.meta.env.VITE_API_URL}/mascota`,
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`
-                },
-                body: JSON.stringify({
-                    nombre: mascota.nombre,
-                    especie: mascota.especie,
-                    raza: mascota.raza || razasDisponibles[0],
-                    sexo: mascota.sexo,
-                    nacimiento: mascota.fechaNacimiento,
-                    tamaño: mascota.tamano,
-                    color: mascota.color,
-                    ubicacion: mascota.ubicacion,
-                    descripcion: mascota.descripcion
-                })
-            }
-        );
-
-        const data = await response.json();
-
-        if (!response.ok) {
-            alert(data.message || data.error || "No se pudo publicar la mascota");
-            return;
-        }
-
-        setMascota((prev) => ({
-            ...prev,
-            publicada: true,
-            idMascota: data.id
-        }));
-
-        agregarNotificacion({
-            tipo: "publicada",
-            titulo: "¡Tu mascota ya está publicada!",
-            descripcion: `${mascota.nombre} ya fue publicada correctamente.`,
-            link: `/mascota/${data.id}`,
-        });
-
-        setFotoActual(0);
-        setModo("vista");
-
-        alert("¡Mascota publicada correctamente!");
-
+      await guardarMascota(mascota);
+      setMascota(null);
+      setFotoActual(0);
+      avisar(creando ? "¡Mascota publicada correctamente!" : "¡Cambios guardados!", "exito");
     } catch (error) {
-        console.error("Error al publicar mascota:", error);
-        alert("No se pudo conectar con el servidor");
+      console.error("Error al guardar mascota:", error);
+      avisar(error.message);
+    } finally {
+      setGuardando(false);
     }
-};
+  };
 
   const abrirEdicion = () => {
-    setModo("edicion"); 
+    setMascota({ ...activa });
+  };
+
+  const abrirCreacion = () => {
+    setMascota({ ...miMascotaInicial, raza: razasPorEspecie.Perro[0], fotos: [] });
+  };
+
+  const cambiarActiva = (idMascota) => {
+    elegirActiva(idMascota);
+    setFotoActual(0);
   };
 
   const especieActual = mascota.especie || "Perro";
   const razasDisponibles = razasPorEspecie[especieActual] || razasPorEspecie.Perro;
 
-  if (modo === "edicion") {
+  if (borrador) {
     return (
       <div className="app-layout">
         <AppSidebar />
         <div className="app-main">
-          <TopBar sinBuscador />
+          <TopBar />
 
           <div className="mimascota-content">
             <div className="mm-form">
-              <h1 className="mm-titulo">Carga los datos de tu mascota</h1>
+              <h1 className="mm-titulo">
+                {creando ? "Cargá los datos de tu mascota" : `Editá los datos de ${activa?.nombre ?? "tu mascota"}`}
+              </h1>
               <p className="mm-subtitulo">
                 Completá la información requerida para dar a conocer a tu mascota.
               </p>
@@ -242,15 +212,12 @@ if (mascota.fotos.length === 0) faltantes.push("al menos una foto");
 
                 {/* Fecha de nacimiento */}
                 <div className="mm-campo">
-                  <label htmlFor="mm-fechaNacimiento">Fecha de nacimiento</label>
-                  <div className="mm-input">
-                    <input
-                      id="mm-fechaNacimiento"
-                      type="date"
-                      value={mascota.fechaNacimiento || ""}
-                      onChange={(e) => handleChange("fechaNacimiento", e.target.value)}
-                    />
-                  </div>
+                  <span className="mm-etiqueta">Fecha de nacimiento</span>
+                  <SelectorFecha
+                    key={mascota.idMascota ?? "nueva"}
+                    valor={mascota.fechaNacimiento || ""}
+                    onChange={(fecha) => handleChange("fechaNacimiento", fecha)}
+                  />
                 </div>
 
                 {/* Sexo */}
@@ -370,14 +337,19 @@ if (mascota.fotos.length === 0) faltantes.push("al menos una foto");
                   style={{ display: "none" }}
                 />
 
-                <button
-                  type="button"
-                  className="mm-continuar"
-                  disabled={!puedeContinuar}
-                  onClick={handleContinuar}
-                >
-                  Guardar y publicar
-                </button>
+                <div className="mm-botones-derecha">
+                  <button type="button" className="mm-cancelar" onClick={() => setMascota(null)}>
+                    Cancelar
+                  </button>
+                  <button
+                    type="button"
+                    className="mm-continuar"
+                    disabled={!puedeContinuar}
+                    onClick={handleContinuar}
+                  >
+                    {creando ? "Guardar y publicar" : "Guardar cambios"}
+                  </button>
+                </div>
               </div>
 
               {faltantes.length > 0 && (
@@ -405,24 +377,36 @@ if (mascota.fotos.length === 0) faltantes.push("al menos una foto");
     <div className="app-layout">
       <AppSidebar />
       <div className="app-main">
-        <TopBar sinBuscador />
+        <TopBar />
 
         <div className="mimascota-content">
           <div className="mimascota-header-acciones">
             <h1 className="mimascota-titulo">Mis mascotas</h1>
-            <button
-              type="button"
-              className="mimascota-agregar-btn"
-              disabled={mascota.publicada}
-              onClick={abrirEdicion}
-              title={mascota.publicada ? "Solo podés tener una mascota registrada a la vez" : ""}
-            >
+            <button type="button" className="mimascota-agregar-btn" onClick={abrirCreacion}>
               + Agregar mascota
             </button>
           </div>
 
-          {mascota.publicada ? (
+          {!cargado ? (
+            <p>Cargando tus mascotas...</p>
+          ) : activa ? (
             <>
+              {mascotas.length > 1 && (
+                <div className="mimascota-selector">
+                  <span>Das likes y comentás como:</span>
+                  {mascotas.map((m) => (
+                    <button
+                      key={m.idMascota}
+                      type="button"
+                      className={m.idMascota === activa.idMascota ? "activa" : ""}
+                      onClick={() => cambiarActiva(m.idMascota)}
+                    >
+                      {m.nombre}
+                    </button>
+                  ))}
+                </div>
+              )}
+
               <div className="mimascota-publicada">
                 <span>Tu mascota está publicada y se muestra en la plataforma.</span>
                 <Link to={`/mascota/${mascota.idMascota}`} state={{ desdeMiMascota: true }}>
@@ -484,7 +468,7 @@ if (mascota.fotos.length === 0) faltantes.push("al menos una foto");
           ) : (
             <div className="mimascota-vacio-box">
               <p>No tenés ninguna mascota registrada todavía.</p>
-              <button type="button" className="mm-continuar" onClick={abrirEdicion}>
+              <button type="button" className="mm-continuar" onClick={abrirCreacion}>
                 Crear perfil de mi mascota
               </button>
             </div>

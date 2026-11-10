@@ -4,26 +4,8 @@ import "./Configuracion.css";
 import AppSidebar from "../components/AppSidebar";
 import TopBar from "../components/TopBar";
 
-function Toggle({ activo, onChange }) {
-  return (
-    <button
-      type="button"
-      className={`config-toggle ${activo ? "activo" : ""}`}
-      onClick={onChange}
-    >
-      <span className="config-toggle-bola"></span>
-    </button>
-  );
-}
-
 function Configuracion() {
   const navigate = useNavigate();
-
-  const [notificaciones, setNotificaciones] = useState(true);
-  const [mensajesNuevos, setMensajesNuevos] = useState(true);
-  const [actualizacionesEmail, setActualizacionesEmail] = useState(false);
-  const [mostrarUbicacion, setMostrarUbicacion] = useState(true);
-  const [perfilVisible, setPerfilVisible] = useState(true);
 
   const [modal, setModal] = useState(null); // null | "cerrarSesion" | "eliminar1" | "eliminar2"
   const [codigoGenerado, setCodigoGenerado] = useState("");
@@ -68,40 +50,13 @@ function Configuracion() {
 
           <div className="config-card">
             <p className="config-seccion-titulo">Cuenta</p>
-            <button type="button" className="config-fila">
-              Editar perfil <span>›</span>
-            </button>
             <button
               type="button"
               className="config-fila"
-              onClick={() => navigate("/cambiar-contrasena")}
+              onClick={() => navigate("/mi-mascota", { state: { editar: true } })}
             >
-              Cambiar contraseña <span>›</span>
+              Editar perfil <span>›</span>
             </button>
-
-            <p className="config-seccion-titulo">Notificaciones</p>
-            <div className="config-fila">
-              Notificaciones
-              <Toggle activo={notificaciones} onChange={() => setNotificaciones(!notificaciones)} />
-            </div>
-            <div className="config-fila">
-              Mensajes nuevos
-              <Toggle activo={mensajesNuevos} onChange={() => setMensajesNuevos(!mensajesNuevos)} />
-            </div>
-            <div className="config-fila">
-              Actualizaciones por email
-              <Toggle activo={actualizacionesEmail} onChange={() => setActualizacionesEmail(!actualizacionesEmail)} />
-            </div>
-
-            <p className="config-seccion-titulo">Privacidad</p>
-            <div className="config-fila">
-              Mostrar mi ubicación
-              <Toggle activo={mostrarUbicacion} onChange={() => setMostrarUbicacion(!mostrarUbicacion)} />
-            </div>
-            <div className="config-fila">
-              Perfil visible para otros usuarios
-              <Toggle activo={perfilVisible} onChange={() => setPerfilVisible(!perfilVisible)} />
-            </div>
 
             <p className="config-seccion-titulo">Otros</p>
             <button

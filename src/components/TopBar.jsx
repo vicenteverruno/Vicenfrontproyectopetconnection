@@ -1,31 +1,29 @@
 import "./TopBar.css";
 import { Link } from "react-router-dom";
-import { IconoLupa } from "./Iconos";
 import iconoNotificaciones from "../assets/icono-notificaciones.png";
 import perfil from "../assets/perfil.png";
+import { useNotificaciones } from "../hooks/useNotificaciones";
 
-function TopBar({ volverA, sinBuscador }) {
+function TopBar({ volverA }) {
+  const { hayNuevas } = useNotificaciones();
+
   return (
-    <header className={`app-topbar ${volverA || sinBuscador ? "app-topbar-sin-linea" : ""}`}>
-      {volverA ? (
+    <header className="app-topbar app-topbar-sin-linea">
+      {volverA && (
         <Link to={volverA} className="app-topbar-volver">
           ‹ Volver
         </Link>
-      ) : sinBuscador ? (
-        <span />
-      ) : (
-        <div className="app-search">
-          <IconoLupa />
-          <input type="text" placeholder="Buscar mascotas por raza, ubicación, etc..." />
-        </div>
       )}
 
       <div className="app-topbar-icons">
-        <Link to="/notificaciones" className="app-topbar-icon-link tiene-notificacion">
+        <Link
+          to="/notificaciones"
+          className={`app-topbar-icon-link ${hayNuevas ? "tiene-notificacion" : ""}`}
+        >
           <img src={iconoNotificaciones} alt="Notificaciones" className="app-topbar-icon-img" />
         </Link>
-        <Link to="/mi-mascota" className="app-topbar-icon-link">
-          <img src={perfil} alt="Perfil" className="app-topbar-icon-img app-topbar-perfil-img" />
+        <Link to="/perfil" className="app-topbar-icon-link">
+          <img src={perfil} alt="Mi perfil" className="app-topbar-icon-img app-topbar-perfil-img" />
         </Link>
       </div>
     </header>

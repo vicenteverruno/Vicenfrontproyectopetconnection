@@ -6,6 +6,17 @@ import IconoOjo from "../components/IconoOjo";
 import iconoMail from "../assets/icono-mail.png";
 import iconoCorazon from "../assets/icono-corazon.png";
 import iconoPata from "../assets/icono-pata.png";
+import { avisar } from "../avisos";
+
+const MINIMO_DIGITOS_TELEFONO = 8;
+
+function mensajeDeErrorRegistro(status, mensaje) {
+  if (/duplicate|unique|duplicad/i.test(mensaje || "")) {
+    return "Ya existe una cuenta registrada con esos datos.";
+  }
+  if (status >= 500) return "Hubo un problema en el servidor. Probá de nuevo.";
+  return mensaje || "Error al registrarse";
+}
 
 function Registro() {
   const [nombre, setNombre] = useState("");
@@ -14,10 +25,25 @@ function Registro() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [mostrarPassword, setMostrarPassword] = useState(false);
+  const [errores, setErrores] = useState({});
   const navigate = useNavigate();
+
+  const validar = () => {
+    const nuevos = {};
+    if (!nombre.trim()) nuevos.nombre = "Ingresá tu nombre.";
+    if (!apellido.trim()) nuevos.apellido = "Ingresá tu apellido.";
+    if (telefono.length < MINIMO_DIGITOS_TELEFONO) nuevos.telefono = "Ingresá un teléfono válido.";
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) nuevos.email = "Ingresá un correo electrónico válido.";
+    if (!password) nuevos.password = "Ingresá una contraseña.";
+    return nuevos;
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const nuevosErrores = validar();
+    setErrores(nuevosErrores);
+    if (Object.keys(nuevosErrores).length > 0) return;
 
     try {
         const response = await fetch(
@@ -40,17 +66,17 @@ function Registro() {
         const data = await response.json();
 
         if (!response.ok) {
-            alert(data.message || "Error al registrarse");
+            avisar(mensajeDeErrorRegistro(response.status, data.message));
             return;
         }
 
-        alert("¡Usuario registrado correctamente!");
+        avisar("¡Te registraste correctamente! Ya podés iniciar sesión.", "exito");
 
         navigate("/");
 
     } catch (error) {
         console.error("Error al registrar usuario:", error);
-        alert("No se pudo conectar con el servidor");
+        avisar("No se pudo conectar con el servidor");
     }
 };
 
@@ -65,45 +91,47 @@ function Registro() {
             <img src={iconoCorazon} alt="" className="inline-heart" />
           </h2>
 
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} noValidate>
             <label htmlFor="nombre">Nombre</label>
-            <div className="auth-input">
+            <div className={`auth-input ${errores.nombre ? "auth-input-error" : ""}`}>
               <input
                 id="nombre"
                 type="text"
                 placeholder="Tu nombre"
                 value={nombre}
                 onChange={(e) => setNombre(e.target.value)}
-                required
               />
             </div>
+            {errores.nombre && <p className="auth-error">{errores.nombre}</p>}
 
             <label htmlFor="apellido">Apellido</label>
-            <div className="auth-input">
+            <div className={`auth-input ${errores.apellido ? "auth-input-error" : ""}`}>
               <input
                 id="apellido"
                 type="text"
                 placeholder="Tu apellido"
                 value={apellido}
                 onChange={(e) => setApellido(e.target.value)}
-                required
               />
             </div>
+            {errores.apellido && <p className="auth-error">{errores.apellido}</p>}
 
             <label htmlFor="telefono">Teléfono</label>
-            <div className="auth-input">
+            <div className={`auth-input ${errores.telefono ? "auth-input-error" : ""}`}>
               <input
                 id="telefono"
                 type="tel"
-                placeholder="+54 11 1234-5678"
+                inputMode="numeric"
+                maxLength={15}
+                placeholder="1112345678"
                 value={telefono}
-                onChange={(e) => setTelefono(e.target.value)}
-                required
+                onChange={(e) => setTelefono(e.target.value.replace(/\D/g, ""))}
               />
             </div>
+            {errores.telefono && <p className="auth-error">{errores.telefono}</p>}
 
             <label htmlFor="email">Correo electrónico</label>
-            <div className="auth-input">
+            <div className={`auth-input ${errores.email ? "auth-input-error" : ""}`}>
               <img src={iconoMail} alt="" className="input-icon" />
               <input
                 id="email"
@@ -111,12 +139,12 @@ function Registro() {
                 placeholder="tuemail@gmail.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                required
               />
             </div>
+            {errores.email && <p className="auth-error">{errores.email}</p>}
 
             <label htmlFor="password">Contraseña</label>
-            <div className="auth-input">
+            <div className={`auth-input ${errores.password ? "auth-input-error" : ""}`}>
               <img src={iconoMail} alt="" className="input-icon" />
               <input
                 id="password"
@@ -124,7 +152,6 @@ function Registro() {
                 placeholder="Tu contraseña"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                required
               />
               <button
                 type="button"
@@ -134,6 +161,7 @@ function Registro() {
                 <IconoOjo abierto={mostrarPassword} />
               </button>
             </div>
+            {errores.password && <p className="auth-error">{errores.password}</p>}
 
             <button type="submit" className="auth-submit">
               Continuar

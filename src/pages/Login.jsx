@@ -6,15 +6,23 @@ import IconoOjo from "../components/IconoOjo";
 import iconoMail from "../assets/icono-mail.png";
 import iconoCorazon from "../assets/icono-corazon.png";
 import iconoPata from "../assets/icono-pata.png";
+import { avisar } from "../avisos";
 
 function Login() {
   const [mostrarPassword, setMostrarPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [contraseña, setContraseña] = useState("");
+  const [errores, setErrores] = useState({});
   const navigate = useNavigate();
 
   async function handleLogin(e) {
     e.preventDefault();
+
+    const nuevosErrores = {};
+    if (!email.trim()) nuevosErrores.email = "Ingresá tu correo electrónico.";
+    if (!contraseña) nuevosErrores.contraseña = "Ingresá tu contraseña.";
+    setErrores(nuevosErrores);
+    if (Object.keys(nuevosErrores).length > 0) return;
 
     try {
       const response = await fetch(
@@ -34,15 +42,19 @@ function Login() {
       const data = await response.json();
 
       if (!response.ok) {
-    alert(data.message || "Error al iniciar sesión");
-    return;
-}
+        avisar(
+          response.status >= 500
+            ? "Hubo un problema en el servidor. Probá de nuevo."
+            : data.message || "Error al iniciar sesión"
+        );
+        return;
+      }
 
-localStorage.setItem("token", data.token);
+      localStorage.setItem("token", data.token);
 
-navigate("/buscar");
+      navigate("/inicio");
     } catch (error) {
-      alert("No se pudo conectar con el servidor");
+      avisar("No se pudo conectar con el servidor");
       console.error(error);
     }
   }
@@ -59,9 +71,9 @@ navigate("/buscar");
             <img src={iconoCorazon} alt="" className="inline-heart" />
           </p>
 
-          <form onSubmit={handleLogin}>
+          <form onSubmit={handleLogin} noValidate>
             <label htmlFor="email">Correo electrónico</label>
-            <div className="auth-input">
+            <div className={`auth-input ${errores.email ? "auth-input-error" : ""}`}>
               <img src={iconoMail} alt="" className="input-icon" />
               <input
                 id="email"
@@ -69,12 +81,12 @@ navigate("/buscar");
                 placeholder="tuemail@gmail.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                required
               />
             </div>
+            {errores.email && <p className="auth-error">{errores.email}</p>}
 
             <label htmlFor="password">Contraseña</label>
-            <div className="auth-input">
+            <div className={`auth-input ${errores.contraseña ? "auth-input-error" : ""}`}>
               <img src={iconoMail} alt="" className="input-icon" />
               <input
                 id="password"
@@ -82,7 +94,6 @@ navigate("/buscar");
                 placeholder="Tu contraseña"
                 value={contraseña}
                 onChange={(e) => setContraseña(e.target.value)}
-                required
               />
               <button
                 type="button"
@@ -92,6 +103,7 @@ navigate("/buscar");
                 <IconoOjo abierto={mostrarPassword} />
               </button>
             </div>
+            {errores.contraseña && <p className="auth-error">{errores.contraseña}</p>}
 
             <button type="submit" className="auth-submit">
               Iniciar sesión

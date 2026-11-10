@@ -27,9 +27,30 @@
   cursor: pointer;
 }
 
-.mimascota-agregar-btn:disabled {
-  background: #a8c9ae;
-  cursor: not-allowed;
+.mimascota-selector {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+  font-size: 14px;
+  color: #374151;
+}
+
+.mimascota-selector button {
+  background: white;
+  border: 1.5px solid #d1d5db;
+  border-radius: 999px;
+  padding: 6px 16px;
+  font-size: 14px;
+  color: #111827;
+  cursor: pointer;
+}
+
+.mimascota-selector button.activa {
+  background: #2e7d32;
+  border-color: #2e7d32;
+  color: white;
 }
 
 /* ---------- Formulario ---------- */
@@ -72,6 +93,35 @@
 
 .mm-campo-ancho {
   grid-column: 1 / -1;
+}
+
+.mm-etiqueta {
+  display: block;
+  font-size: 12px;
+  color: #111827;
+  margin-bottom: 6px;
+}
+
+.mm-fecha {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr 1.1fr;
+  gap: 8px;
+}
+
+.mm-botones-derecha {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.mm-cancelar {
+  background: white;
+  border: 1.5px solid #d1d5db;
+  border-radius: 8px;
+  padding: 11px 24px;
+  font-size: 14px;
+  color: #111827;
+  cursor: pointer;
 }
 
 .mm-input {

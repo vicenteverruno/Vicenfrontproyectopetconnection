@@ -5,7 +5,7 @@ import AppSidebar from "../components/AppSidebar";
 import TopBar from "../components/TopBar";
 import TarjetaMascotaInicio from "../components/TarjetaMascotaInicio";
 import FiltroDesplegable from "../components/FiltroDesplegable";
-import { IconoPata, IconoRaza, IconoCalendario, IconoUbicacion } from "../components/Iconos";
+import { IconoPata, IconoRaza, IconoUbicacion } from "../components/Iconos";
 import { useMascotas } from "../hooks/useMascotas";
 import iconoCorazon from "../assets/icono-corazon.png";
 
@@ -17,42 +17,14 @@ const razasPorEspecie = {
 };
 
 const sexos = ["Todos", "Macho", "Hembra"];
-const edades = ["Todas", "0-1", "1-2", "2-4", "4-6", "6-8", "8-10", "10-12", "12-14", "+14"];
 const tamanos = ["Todos", "Pequeño", "Mediano", "Grande"];
 const ubicaciones = ["Todas", "CABA", "Zona sur", "Zona norte", "Zona oeste", "La Plata", "Provincia de Buenos Aires", "Otra"];
-
-// AGREGADO: rangos de edad en años: [desde, hasta)
-const rangosEdad = {
-  "0-1": [0, 1],
-  "1-2": [1, 2],
-  "2-4": [2, 4],
-  "4-6": [4, 6],
-  "6-8": [6, 8],
-  "8-10": [8, 10],
-  "10-12": [10, 12],
-  "12-14": [12, 14],
-  "+14": [14, Infinity],
-};
-
-// AGREGADO: calcula la edad en años a partir de la fecha de nacimiento ("2022-05-10")
-function edadEnAnios(nacimiento) {
-  const partes = String(nacimiento || "").match(/^(\d{4})-(\d{2})-(\d{2})$/);
-  if (!partes) return null;
-
-  const nac = new Date(Number(partes[1]), Number(partes[2]) - 1, Number(partes[3]));
-  const hoy = new Date();
-  let meses = (hoy.getFullYear() - nac.getFullYear()) * 12 + (hoy.getMonth() - nac.getMonth());
-  if (hoy.getDate() < nac.getDate()) meses -= 1;
-
-  return meses / 12;
-}
 
 function BuscarMascotas() {
   // SACADO: const mascotas = useMascotas();
   const [especie, setEspecie] = useState("Perro");
   const [raza, setRaza] = useState("Todas");
   const [sexo, setSexo] = useState("Todos");
-  const [edad, setEdad] = useState("Todas");
   const [tamano, setTamano] = useState("Todos");
   const [ubicacion, setUbicacion] = useState("Todas");
 
@@ -64,18 +36,12 @@ function BuscarMascotas() {
     tamano: tamano === "Todos" ? "" : tamano,
   });
 
-  // AGREGADO: raza, edad y ubicación se filtran acá sobre lo que mandó el back
+  // AGREGADO: raza y ubicación se filtran acá sobre lo que mandó el back
   const zonasConocidas = ubicaciones.filter((u) => u !== "Todas" && u !== "Otra");
 
   const mascotas = todas.filter((m) => {
     if (raza !== "Todas" && !(m.raza || "").toLowerCase().includes(raza.toLowerCase())) {
       return false;
-    }
-
-    if (edad !== "Todas") {
-      const anios = edadEnAnios(m.nacimiento);
-      const [desde, hasta] = rangosEdad[edad];
-      if (anios === null || anios < desde || anios >= hasta) return false;
     }
 
     if (ubicacion !== "Todas") {
@@ -131,13 +97,6 @@ function BuscarMascotas() {
               opciones={sexos}
               valor={sexo}
               onChange={setSexo}
-            />
-            <FiltroDesplegable
-              label="Edad"
-              icono={<IconoCalendario size={16} />}
-              opciones={edades}
-              valor={edad}
-              onChange={setEdad}
             />
             <FiltroDesplegable
               label="Tamaño"

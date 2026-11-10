@@ -1,7 +1,7 @@
 import logo from "../assets/logo.png";
 import perros from "../assets/perros.png";
-import iconoEscudo from "../assets/icono-escudo.png";
-import iconoChat from "../assets/icono-chat.png";
+import iconoPata from "../assets/icono-pata.png";
+import iconoCorazon from "../assets/icono-corazon.png";
 
 function AuthSidebar() {
   return (
@@ -14,17 +14,17 @@ function AuthSidebar() {
 
       <ul className="auth-features">
         <li>
-          <img src={iconoEscudo} alt="" className="auth-feature-icon-img" />
+          <img src={iconoPata} alt="" className="auth-feature-icon-img" />
           <div>
-            <strong>Perfiles verificados</strong>
-            <p>Usuarios y mascotas verificados para tu seguridad.</p>
+            <strong>Mascotas cerca tuyo</strong>
+            <p>Buscá por especie, raza, sexo, tamaño y ubicación.</p>
           </div>
         </li>
         <li>
-          <img src={iconoChat} alt="" className="auth-feature-icon-img" />
+          <img src={iconoCorazon} alt="" className="auth-feature-icon-img" />
           <div>
-            <strong>Chat seguro</strong>
-            <p>Contactá con otros dueños de forma segura y fácil.</p>
+            <strong>Hacé match</strong>
+            <p>Si las dos mascotas se dan like, ¡hay match!</p>
           </div>
         </li>
       </ul>
