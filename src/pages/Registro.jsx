@@ -172,7 +172,7 @@ function Registro() {
           <hr />
 
           <p className="auth-switch">
-            Ya tengo una cuenta <Link to="/">Iniciar sesión</Link>
+            Ya tengo una cuenta <Link to="/Login">Iniciar sesión</Link>
           </p>
         </div>
       </main>
