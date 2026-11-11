@@ -1,6 +1,7 @@
 import { useEffect, useSyncExternalStore } from "react";
 import { apiFetch, obtenerIdUsuario } from "../api";
 import { useMisMascotas } from "./useMiMascota";
+import { pedirUsuario } from "./useUsuario";
 
 const claveVistas = (usuario) => `petconnection_notificaciones_vistas_${usuario}`;
 const oyentes = new Set();
@@ -39,7 +40,7 @@ async function pedirJson(ruta) {
 
 const soloFecha = (fecha) => String(fecha).slice(0, 10);
 
-async function notificacionesDeMascota(idMascota, nombres) {
+async function notificacionesDeMascota(idMascota, nombres, duenos) {
   const [likes, comentarios] = await Promise.all([
     pedirJson(`/like/${idMascota}`),
     pedirJson(`/comentario/${idMascota}`),
@@ -73,12 +74,17 @@ async function notificacionesDeMascota(idMascota, nombres) {
         if (!devuelto) return null;
 
         const fechas = [soloFecha(l.fecha), soloFecha(devuelto.fecha)].sort();
+        const idDueno = duenos[l.id_mascota_1];
+        // Cada dueño ve los datos del dueño de la otra mascota
+        const contacto = idDueno == null ? null : await pedirUsuario(idDueno);
+
         return {
           id: `match-${[idMascota, l.id_mascota_1].sort((a, b) => a - b).join("-")}`,
           tipo: "match",
           titulo: "¡Es un match!",
           descripcion: `A ${miNombre} y a ${nombres[l.id_mascota_1] || "otra mascota"} les gustaron sus perfiles`,
           fecha: fechas[1],
+          contacto,
         };
       })
     )
@@ -91,11 +97,13 @@ async function pedirNotificaciones(ids) {
   try {
     const mascotas = await pedirJson("/mascota");
     const nombres = {};
+    const duenos = {};
     mascotas.forEach((m) => {
       nombres[m.id_mascota] = (m.nombre || "").trim();
+      duenos[m.id_mascota] = m.id_usuario;
     });
 
-    const porMascota = await Promise.all(ids.map((id) => notificacionesDeMascota(id, nombres)));
+    const porMascota = await Promise.all(ids.map((id) => notificacionesDeMascota(id, nombres, duenos)));
     const sinRepetir = new Map(porMascota.flat().map((n) => [n.id, n]));
 
     const lista = [...sinRepetir.values()]

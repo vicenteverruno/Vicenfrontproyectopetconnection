@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import "./Notificaciones.css";
 import AppSidebar from "../components/AppSidebar";
 import TopBar from "../components/TopBar";
+import { IconoEmail, IconoTelefono } from "../components/Iconos";
 import { useNotificaciones, marcarVistas } from "../hooks/useNotificaciones";
 
 const iconosPorTipo = {
@@ -38,6 +39,25 @@ function Notificaciones() {
                 <div className="notificacion-texto">
                   <strong>{n.titulo}</strong>
                   <p>{n.descripcion}</p>
+
+                  {n.tipo === "match" &&
+                    (n.contacto ? (
+                      <div className="notificacion-contacto">
+                        <span className="notificacion-contacto-titulo">
+                          Contactá a {n.contacto.nombre} {n.contacto.apellido}
+                        </span>
+                        <a href={`mailto:${n.contacto.mail}`}>
+                          <IconoEmail /> {n.contacto.mail}
+                        </a>
+                        <a href={`tel:${n.contacto.telefono}`}>
+                          <IconoTelefono /> {n.contacto.telefono}
+                        </a>
+                      </div>
+                    ) : (
+                      <p className="notificacion-sin-contacto">
+                        Los datos de contacto no están disponibles.
+                      </p>
+                    ))}
                 </div>
 
                 <div className="notificacion-meta">

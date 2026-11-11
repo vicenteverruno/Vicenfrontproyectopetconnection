@@ -58,6 +58,41 @@
     margin: 0;
   }
   
+  .notificacion-contacto {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 10px;
+    padding: 10px 12px;
+    background: white;
+    border-radius: 8px;
+  }
+
+  .notificacion-contacto-titulo {
+    font-size: 13px;
+    font-weight: 700;
+    color: #1f2937;
+  }
+
+  .notificacion-contacto a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: #2e7d32;
+    text-decoration: none;
+    word-break: break-word;
+  }
+
+  .notificacion-contacto svg {
+    flex-shrink: 0;
+  }
+
+  .notificacion-texto p.notificacion-sin-contacto {
+    margin-top: 8px;
+    font-style: italic;
+  }
+
   .notificacion-meta {
     display: flex;
     flex-direction: column;

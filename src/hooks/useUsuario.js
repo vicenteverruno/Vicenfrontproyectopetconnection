@@ -3,7 +3,7 @@ import { apiFetch } from "../api";
 
 const cache = new Map();
 
-function pedirUsuario(id) {
+export function pedirUsuario(id) {
   if (!cache.has(id)) {
     const pedido = apiFetch(`/usuario/${id}`)
       .then((response) => (response.ok ? response.json() : null))
