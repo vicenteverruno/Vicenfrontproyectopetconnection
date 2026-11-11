@@ -1,36 +1,65 @@
-import { useSyncExternalStore } from "react";
+import { useEffect, useSyncExternalStore } from "react";
+import { apiFetch } from "../api";
 import { useMiMascota } from "./useMiMascota";
 
-// Los favoritos son de cada mascota: así no se mezclan entre mascotas ni entre cuentas
-const clave = (idMascota) => `petconnection_favoritos_mascota_${idMascota}`;
+// Los favoritos de cada mascota son los likes que dio, guardados en la base de datos
 const SIN_FAVORITOS = [];
-const cache = new Map();
+const favoritosPorMascota = new Map();
+const sincronizadas = new Set();
+const pedidosEnCurso = new Map();
 const oyentes = new Set();
 
-function leer(idMascota) {
-  if (idMascota == null) return SIN_FAVORITOS;
+const leer = (idMascota) => favoritosPorMascota.get(idMascota) ?? SIN_FAVORITOS;
 
-  if (!cache.has(idMascota)) {
-    let lista = SIN_FAVORITOS;
-    try {
-      lista = JSON.parse(localStorage.getItem(clave(idMascota))) ?? SIN_FAVORITOS;
-    } catch {
-      // Si lo guardado está roto, arrancamos sin favoritos
-    }
-    cache.set(idMascota, lista);
-  }
-
-  return cache.get(idMascota);
+function publicar(idMascota, lista) {
+  favoritosPorMascota.set(idMascota, lista);
+  oyentes.forEach((avisar) => avisar());
 }
 
-function escribir(idMascota, lista) {
-  cache.set(idMascota, lista);
-  try {
-    localStorage.setItem(clave(idMascota), JSON.stringify(lista));
-  } catch {
-    // Si el navegador se queda sin espacio, no rompemos la página
-  }
-  oyentes.forEach((avisar) => avisar());
+async function pedirJson(ruta) {
+  const response = await apiFetch(ruta);
+  if (!response.ok) throw new Error(`Falló GET ${ruta}`);
+  return response.json();
+}
+
+// El back solo informa los likes que recibe cada mascota, así que se revisan las demás
+async function pedirFavoritos(idMascota) {
+  const mascotas = await pedirJson("/mascota");
+  const otras = mascotas.map((m) => m.id_mascota).filter((id) => id !== idMascota);
+
+  const resultados = await Promise.all(
+    otras.map(async (id) => {
+      const likesRecibidos = await pedirJson(`/like/${id}`);
+      return likesRecibidos.some((like) => like.id_mascota_1 === idMascota) ? id : null;
+    })
+  );
+
+  return resultados.filter((id) => id !== null);
+}
+
+function sincronizar(idMascota) {
+  if (idMascota == null || sincronizadas.has(idMascota) || pedidosEnCurso.has(idMascota)) return;
+
+  const pedido = { huboCambios: false };
+  pedidosEnCurso.set(idMascota, pedido);
+
+  pedirFavoritos(idMascota)
+    .then((lista) => {
+      pedidosEnCurso.delete(idMascota);
+
+      // Si dio o sacó un like mientras cargaba, esta lista puede estar desactualizada
+      if (pedido.huboCambios) {
+        sincronizar(idMascota);
+        return;
+      }
+
+      sincronizadas.add(idMascota);
+      publicar(idMascota, lista);
+    })
+    .catch((error) => {
+      pedidosEnCurso.delete(idMascota);
+      console.error("No se pudieron cargar los favoritos:", error);
+    });
 }
 
 function suscribirse(oyente) {
@@ -43,12 +72,21 @@ export function useFavoritos() {
   const idMiMascota = miMascota.idMascota;
   const favoritos = useSyncExternalStore(suscribirse, () => leer(idMiMascota));
 
+  useEffect(() => {
+    sincronizar(idMiMascota);
+  }, [idMiMascota]);
+
   const esFavorito = (id) => favoritos.includes(id);
 
+  // Se llama cuando el back ya confirmó el cambio del like
   const toggleFavorito = (id) => {
     if (idMiMascota == null) return;
+
+    const pedido = pedidosEnCurso.get(idMiMascota);
+    if (pedido) pedido.huboCambios = true;
+
     const actual = leer(idMiMascota);
-    escribir(idMiMascota, actual.includes(id) ? actual.filter((f) => f !== id) : [...actual, id]);
+    publicar(idMiMascota, actual.includes(id) ? actual.filter((f) => f !== id) : [...actual, id]);
   };
 
   return { favoritos, esFavorito, toggleFavorito };
