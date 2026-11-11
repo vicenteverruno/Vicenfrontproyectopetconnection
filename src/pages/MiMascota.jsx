@@ -4,13 +4,11 @@ import "./MiMascota.css";
 import AppSidebar from "../components/AppSidebar";
 import TopBar from "../components/TopBar";
 import SelectorFecha from "../components/SelectorFecha";
-import { useMisMascotas, guardarMascota, elegirActiva } from "../hooks/useMiMascota";
+import { useMisMascotas, guardarMascota, elegirActiva, esFotoSinSubir, MAX_FOTOS } from "../hooks/useMiMascota";
 import { calcularEdad } from "../hooks/useMascotas";
 import { avisar } from "../avisos";
 import { miMascotaInicial } from "../data/miMascota";
 import { IconoPata, IconoCalendario, IconoUbicacion, IconoTamano } from "../components/Iconos";
-
-const MAX_FOTOS = 8;
 
 const especiesDisponibles = ["Perro", "Gato"];
 
@@ -106,7 +104,7 @@ if (!mascota.fechaNacimiento) faltantes.push("la fecha de nacimiento");
 if (!(mascota.raza || "").trim()) faltantes.push("la raza");
 if (!(mascota.color || "").trim()) faltantes.push("el color");
 if (!(mascota.ubicacion || "").trim()) faltantes.push("la ubicación");
-// Las fotos solo se guardan en este navegador: al editar desde otro no tienen que ser obligatorias
+// Las mascotas creadas antes de subir fotos al back pueden no tener ninguna: al editar no son obligatorias
 if (creando && mascota.fotos.length === 0) faltantes.push("al menos una foto");
 
   const puedeContinuar = faltantes.length === 0 && !guardando;
@@ -306,13 +304,16 @@ if (creando && mascota.fotos.length === 0) faltantes.push("al menos una foto");
                     {mascota.fotos.map((foto, index) => (
                       <div key={index} className="mm-foto">
                         <img src={foto} alt="" />
-                        <button
-                          type="button"
-                          className="mm-foto-x"
-                          onClick={() => handleEliminarFoto(index)}
-                        >
-                          ×
-                        </button>
+                        {/* El back todavía no permite borrar las fotos ya subidas */}
+                        {esFotoSinSubir(foto) && (
+                          <button
+                            type="button"
+                            className="mm-foto-x"
+                            onClick={() => handleEliminarFoto(index)}
+                          >
+                            ×
+                          </button>
+                        )}
                       </div>
                     ))}
                   </div>

@@ -3,6 +3,9 @@ import { apiFetch, obtenerIdUsuario } from "../api";
 import { avisar } from "../avisos";
 import { miMascotaInicial } from "../data/miMascota";
 
+// El back acepta hasta 5 imágenes por pedido
+export const MAX_FOTOS = 5;
+
 const CLAVE_VIEJA = "petconnection_mi_mascota";
 const claveFotos = (usuario) => `petconnection_fotos_${usuario}`;
 const claveActiva = (usuario) => `petconnection_mascota_activa_${usuario}`;
@@ -31,8 +34,8 @@ function escribir(clave, valor) {
   }
 }
 
-// Las fotos no se guardan en el back. Antes había una sola mascota por navegador:
-// si esa mascota es de este usuario, sus fotos pasan al formato nuevo.
+// Fotos viejas que quedaron en este navegador y todavía no se subieron al back.
+// Antes había una sola mascota por navegador: si esa mascota es de este usuario, sus fotos pasan al formato nuevo.
 function leerFotos(usuario, filas) {
   const fotos = leerJson(claveFotos(usuario), {});
   const vieja = leerJson(CLAVE_VIEJA, null);
@@ -62,8 +65,25 @@ function filaAMiMascota(fila, fotos) {
     ubicacion: limpiar(fila.ubicacion),
     descripcion: limpiar(fila.descripcion),
     publicada: true,
-    fotos: fotos[fila.id_mascota] || [],
+    fotos: fila.imagenes?.length ? fila.imagenes : (fotos[fila.id_mascota] || []).slice(0, MAX_FOTOS),
   };
+}
+
+// Las fotos que todavía no se subieron son data URLs; las del back ya son links
+export const esFotoSinSubir = (foto) => foto.startsWith("data:");
+
+async function armarCuerpo(campos, fotosNuevas) {
+  if (fotosNuevas.length === 0) return JSON.stringify(campos);
+
+  const formulario = new FormData();
+  Object.entries(campos).forEach(([campo, valor]) => formulario.append(campo, valor ?? ""));
+
+  for (const [indice, foto] of fotosNuevas.entries()) {
+    const archivo = await (await fetch(foto)).blob();
+    formulario.append("imagenes", archivo, `foto-${indice + 1}.jpg`);
+  }
+
+  return formulario;
 }
 
 async function cargar(usuario) {
@@ -114,17 +134,20 @@ export async function guardarMascota(datos) {
   try {
     response = await apiFetch(creando ? "/mascota" : `/mascota/${datos.idMascota}`, {
       method: creando ? "POST" : "PUT",
-      body: JSON.stringify({
-        nombre: datos.nombre,
-        especie: datos.especie,
-        raza: datos.raza,
-        sexo: datos.sexo,
-        nacimiento: datos.fechaNacimiento,
-        tamaño: datos.tamano,
-        color: datos.color,
-        ubicacion: datos.ubicacion,
-        descripcion: datos.descripcion,
-      }),
+      body: await armarCuerpo(
+        {
+          nombre: datos.nombre,
+          especie: datos.especie,
+          raza: datos.raza,
+          sexo: datos.sexo,
+          nacimiento: datos.fechaNacimiento,
+          tamaño: datos.tamano,
+          color: datos.color,
+          ubicacion: datos.ubicacion,
+          descripcion: datos.descripcion,
+        },
+        datos.fotos.filter(esFotoSinSubir)
+      ),
     });
   } catch {
     throw new Error("No se pudo conectar con el servidor");
@@ -136,17 +159,16 @@ export async function guardarMascota(datos) {
   if (response.status >= 500) throw new Error("Hubo un problema en el servidor. Probá de nuevo.");
   if (!response.ok) throw new Error(data.message || "No se pudo guardar la mascota");
 
-  const guardada = { ...datos, idMascota: creando ? data.id : datos.idMascota, publicada: true };
-  const fotos = leerJson(claveFotos(estado.usuario), {});
-  fotos[guardada.idMascota] = guardada.fotos;
-  escribir(claveFotos(estado.usuario), fotos);
+  const usuario = estado.usuario;
+  const idMascota = creando ? data.id : datos.idMascota;
 
-  publicar({
-    mascotas: creando
-      ? [...estado.mascotas, guardada]
-      : estado.mascotas.map((m) => (m.idMascota === guardada.idMascota ? guardada : m)),
-  });
-  if (creando) elegirActiva(guardada.idMascota);
+  // Las fotos ya quedaron en el back: se borra la copia local y se vuelven a pedir para tener sus links
+  const fotos = leerJson(claveFotos(usuario), {});
+  delete fotos[idMascota];
+  escribir(claveFotos(usuario), fotos);
+
+  if (creando) escribir(claveActiva(usuario), idMascota);
+  await cargar(usuario);
 }
 
 function suscribirse(oyente) {

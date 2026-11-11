@@ -59,8 +59,7 @@ function filaAMascota(m, idMiMascota) {
     // Datos que todavía no existen en el back: quedan vacíos para que nada se rompa
     peso: "",
     salud: {},
-    // Las fotos no se guardan en la base de datos (por ahora)
-    fotos: [],
+    fotos: m.imagenes || [],
   };
 }
  

@@ -11,11 +11,13 @@ export function obtenerIdUsuario() {
 
 export function apiFetch(ruta, opciones = {}) {
   const token = localStorage.getItem("token");
- 
+  // Con FormData (fotos) el navegador tiene que poner el Content-Type solo
+  const esFormulario = opciones.body instanceof FormData;
+
   return fetch(`${import.meta.env.VITE_API_URL}${ruta}`, {
     ...opciones,
     headers: {
-      "Content-Type": "application/json",
+      ...(esFormulario ? {} : { "Content-Type": "application/json" }),
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
       ...opciones.headers,
     },
